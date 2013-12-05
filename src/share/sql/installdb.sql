@@ -89,3 +89,11 @@ create table if not exists real_server_url(
         path char(50) not null default '/',
         digest char(50) not null
 );
+
+-- user_management
+create table if not exists user_management(
+        id int not null auto_increment primary key,
+        username char(50) not null,
+        password char(50) not null
+);
+insert into user_management(username,password) values('admin','4dcdd763e140ca7fabf4ecf12ccb8383bf164d59');
