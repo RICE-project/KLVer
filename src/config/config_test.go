@@ -1,18 +1,17 @@
-package readcfg
+package config
 
 import "testing"
-import "consts"
 
 var a Config
 
 func TestReadConfig(t *testing.T) {
-        err := a.ReadConfig(consts.DIR_CFG + "glvsadm.cfg")
+        err := a.Init()
         if err != nil {
                 t.Error(err)
         }
         t.Log(a)
-        if a.Language != "zh_CN" {
-                t.Errorf("Err: ReadConfig() failed. got %s, expected 'zh_CN'", a.Language)
+        if a.Cfg["lang"] != "zh_CN" {
+                t.Errorf("Err: Init() failed. got %s, expected 'zh_CN'", a.Cfg["lang"])
         }
 }
 
