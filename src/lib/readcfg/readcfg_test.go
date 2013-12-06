@@ -4,7 +4,7 @@ import "testing"
 import "consts"
 
 func TestReadConfig(t *testing.T) {
-        test, err := ReadConfig(consts.DIR_CFG + "glvsadm.cfg")
+        test, err := ReadConfig("../" + consts.DIR_CFG + "glvsadm.cfg")
         if err != nil {
                 t.Error("Err: ", err)
         }
