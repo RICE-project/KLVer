@@ -6,5 +6,5 @@ const(
         DIR_JS = "../share/js/"
         DIR_CSS = "../share/css/"
         DIR_MAKE = "../share/make/"
-        CMD_DEPLOY = "deploy.sh"
+        CMD_DEPLOY = "../share/libexec/deploy.sh"
 )
