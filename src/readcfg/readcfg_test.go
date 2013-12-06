@@ -12,13 +12,14 @@ func TestReadConfig(t *testing.T) {
         }
         t.Log(a)
         if a.Language != "zh_CN" {
-                t.Errorf("ReadConfig() failed. got %s, expected 'zh_CN'", a.Language)
+                t.Errorf("Err: ReadConfig() failed. got %s, expected 'zh_CN'", a.Language)
         }
 }
 
 func TestGetDSN(t *testing.T) {
         r := a.GetDSN()
+        t.Log(r)
         if r != "glvsadm:glvsadm@tcp(localhost:3306)/glvsadm?charset=utf8" {
-                t.Errorf("GetDSN failed. get %s", r)
+                t.Errorf("Err: GetDSN() failed. get %s", r)
         }
 }
