@@ -94,6 +94,7 @@ create table if not exists real_server_url(
 create table if not exists user_management(
         id int not null auto_increment primary key,
         username char(50) not null,
-        password char(50) not null
+        password char(50) not null,
+        is_enabled bool not null default true
 );
 insert into user_management(username,password) values('admin','4dcdd763e140ca7fabf4ecf12ccb8383bf164d59');
