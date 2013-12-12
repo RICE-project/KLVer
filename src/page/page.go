@@ -2,7 +2,7 @@ package page
 
 import(
         "io/ioutil"
-        "consts"
+        "lib/consts"
         "net/http"
         "html/template"
         "path"

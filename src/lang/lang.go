@@ -1,7 +1,7 @@
 package lang
 
 import (
-        "consts"
+        "lib/consts"
         "lib/readcfg"
 )
 

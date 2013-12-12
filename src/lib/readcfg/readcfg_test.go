@@ -1,7 +1,7 @@
 package readcfg
 
 import "testing"
-import "consts"
+import "lib/consts"
 
 func TestReadConfig(t *testing.T) {
         test, err := ReadConfig("../" + consts.DIR_CFG + "glvsadm.cfg")
