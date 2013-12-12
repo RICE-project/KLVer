@@ -11,13 +11,14 @@ import(
 
 type session struct {
         name string
-        exprreTime int64  //timestamp
+        expireTime int64  //timestamp
 }
 
 type Sessions map[string] session
 
 func (a *Sessions) Init() error {
         a = make(Sessions)
+        go gc()
 }
 
 func (a *Sessions) SetSession(name string) {
@@ -41,8 +42,14 @@ func (a *Sessions) GetName(sid string) (string, error) {
 }
 
 func (a *Sessions) gc() {
-        var ses session
-        if len(a) != 0{
-                for 
+        for {
+                if len(a) != 0{
+                        for key, value := range a {
+                                if value.expireTime < time.Now().Unix() {
+                                        delete(a, key)
+                                }
+                        }
+                        time.Sleep(30 * time.Second) //every 30 seconds we clear the expire sessions.
+                }
         }
 }
