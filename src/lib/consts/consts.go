@@ -10,5 +10,6 @@ const(
         DIR_LANG = "../share/lang/"
         DIR_LOG = "../share/log/"
         CMD_DEPLOY = "../share/libexec/deploy.sh"
-        CFG_SESSION_TIMEOUT = 3600  //1 hour
+        CFG_SESSION_TIMEOUT int64 = 3600  //1 hour
+        CFG_GC_INTERVAL = 30 //30 minutes
 )

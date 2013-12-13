@@ -10,12 +10,12 @@ import(
 
 type Page struct {
         lang *map[string] string
-        tmpl map[string] *template.Template
+        templates map[string] *template.Template
 }
 
 //Load language and HTML templates.
-func (a *Page) Init(language *map[string] string) error{
-        a.lang = language
+func (this *Page) Init(language *map[string] string) error{
+        this.lang = language
         fileInfoArr, err:= ioutil.ReadDir(consts.DIR_HTML)
         if errReadDir != nil {
                 return err
@@ -30,14 +30,14 @@ func (a *Page) Init(language *map[string] string) error{
 
                 templatePath = consts.DIR_HTML + templateName
                 t := template.Must(template.ParseFiles(templatePath))
-                a.tmpl[templateName] = t
+                this.templates[templateName] = t
         }
 }
 
 //Return http handler.
-func (a *Page) GetHandler(name string) http.HandlerFunc {
-        return func(w http.ResponseWriter, r *http.Request) {
-                err := tmpl[name].Execute(w, a.lang)
+func (this *Page) GetHandler(name string) http.HandlerFunc {
+        return func(writer http.ResponseWriter, request *http.Request) {
+                err := templates[name].Execute(writer, this.lang)
                 checkErr(err)
         }
 }

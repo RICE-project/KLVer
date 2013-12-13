@@ -8,12 +8,12 @@ func TestReadLang(t *testing.T){
         if err1 != nil {
                 t.Errorf("ERR:",err1)
         }
-        t.Logf("DEB:", zhLang)
+        t.Log("DEB:", zhLang)
         enLang, err2 := ReadLang("en")
         if err2 != nil {
                 t.Errorf("ERR:",err2)
         }
-        t.Logf("DEB:", enLang)
+        t.Log("DEB:", enLang)
         if zhLang["TEST"] != "这是一条测试文本。ABC123" {
                 t.Errorf("ERR: %s", zhLang["TEST"])
         }

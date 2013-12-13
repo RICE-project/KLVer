@@ -6,19 +6,19 @@ import "config"
 var a config.Config
 
 func TestConnect(t *testing.T) {
-        err := a.Init()
-        if err != nil {
+        errCfg := a.Init()
+        if errcfg != nil {
                 t.Errorf("Err: %s", err)
         }
-        pdb, errdb := Connect(a.GetDSN())
-        if errdb != nil {
-                t.Errorf("Err: %s", errdb)
+        pDb, errDb := Connect(a.GetDSN())
+        if errDb != nil {
+                t.Errorf("Err: %s", errDb)
         }
-        row := pdb.QueryRow("SELECT username FROM user_management")
+        row := pDb.QueryRow("SELECT username FROM user_management")
         var name string
-        errrow := row.Scan(&name)
-        if errrow != nil {
-                t.Errorf("Err: %s", errrow)
+        errRow := row.Scan(&name)
+        if errRow != nil {
+                t.Errorf("Err: %s", errRow)
         }
         t.Logf("Deb: %s", name)
         if name != "admin" {
