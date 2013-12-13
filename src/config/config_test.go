@@ -10,8 +10,9 @@ func TestReadConfig(t *testing.T) {
                 t.Error(err)
         }
         t.Log(a)
-        if a.Cfg["lang"] != "zh_CN" {
-                t.Errorf("Err: Init() failed. got %s, expected 'zh_CN'", a.Cfg["lang"])
+        s, _ := a.GetConfig("lang")
+        if s != "zh_CN" {
+                t.Errorf("Err: Init() failed. got %s, expected 'zh_CN'", s)
         }
 }
 
