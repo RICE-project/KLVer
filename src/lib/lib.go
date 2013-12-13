@@ -1,5 +1,4 @@
 /*
-lib means encapsulation of bottom operation and consts, 
-not shared.
+lib means basic infrastructure and shared objects. 
 */
 package lib
