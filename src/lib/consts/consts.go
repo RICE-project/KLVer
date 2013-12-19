@@ -8,7 +8,7 @@ const(
         DIR_CSS = "../share/css/"
         DIR_MAKE = "../share/make/"
         DIR_LANG = "../share/lang/"
-        DIR_LOG = "../share/log/"
+        DIR_LOG = "../../share/log/"
         CMD_DEPLOY = "../share/libexec/deploy.sh"
         CFG_SESSION_TIMEOUT int64 = 3600  //1 hour
         CFG_GC_INTERVAL = 30 //30 minutes
