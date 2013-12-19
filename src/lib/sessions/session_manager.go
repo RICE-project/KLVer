@@ -1,3 +1,4 @@
+
 package sessions
 
 import(
@@ -6,16 +7,19 @@ import(
         "lib/consts"
 )
 
+//A global Session Manager.
 type SessionManager struct{
         lock sync.Mutex
         sessionList map[string] *Session
 }
 
+//Init the Session Manager.
 func (this *SessionManager) Init(){
         this.sessionList = make(map[string] *Session)
         go this.gc()
 }
 
+//Creat a new Session.
 func (this *SessionManager) CreateSession(value map[string] string) *Session {
         b := new(Session)
         b.newSession(value)
@@ -24,16 +28,19 @@ func (this *SessionManager) CreateSession(value map[string] string) *Session {
         return b
 }
 
+//Get a Session.
 func (this *SessionManager) GetSession(sid string) *Session{
         ses := this.sessionList[sid]
         ses.updateExpireTime()
         return ses
 }
 
+//Logout or time expired.
 func (this *SessionManager) DestorySession(sid string) {
         delete(this.sessionList, sid)
 }
 
+//Sessions which are time-expired should be deleted.
 func (this *SessionManager) gc() {
         gcList := make([]string, 0)
         this.lock.Lock()

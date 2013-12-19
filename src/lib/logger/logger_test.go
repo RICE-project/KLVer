@@ -11,6 +11,6 @@ func TestLogger(t *testing.T){
         }
         defer a.CloseLogger()
         a.SetPrefix("TEST")
-        a.LogTest("The quick brown fox jumps over the lazy dog.")
-        a.LogTest("gLVSAdm.lib.logger.LoggerManager test.", a)
+        a.logTest("The quick brown fox jumps over the lazy dog.")
+        a.logTest("gLVSAdm.lib.logger.Logger test.", a)
 }

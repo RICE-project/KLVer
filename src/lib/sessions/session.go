@@ -1,3 +1,6 @@
+/*
+A implement of Session data structure.
+*/
 package sessions
 
 import (
@@ -40,10 +43,12 @@ func (this *Session) newSession(value map[string] string) {
         this.SetValue(value)
 }
 
+//Get Session values.
 func (this *Session) GetValue() map[string] string{
         return this.values
 }
 
+//Get Session ID.
 func (this *Session) GetSid() string {
         return this.sid
 }
@@ -60,6 +65,7 @@ func (this *Session) updateExpireTime() {
         this.expire = expireTime()
 }
 
+//Set Session values.
 func (this *Session) SetValue(value map[string] string) {
         this.values = value
 }

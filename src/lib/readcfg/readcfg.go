@@ -1,7 +1,24 @@
+/*
+Common library of config and lang module.
+*/
 package readcfg
 
 import "io/ioutil"
 
+/*
+ReacConfig is used to read text config file.
+
+any config should be writen like this.
+
+    key1=value1
+    key2=value2
+    key3=value3
+    ...
+
+Blank line(s) and line(s) started with '#' will be skiped.
+
+the '=' between key and value muse be without any space.
+*/
 func ReadConfig(filename string) (map[string] string,error){
         cfg := make(map[string] string)
         b, err := ioutil.ReadFile(filename)

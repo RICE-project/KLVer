@@ -1,3 +1,6 @@
+/*
+All global consts should be writen here
+*/
 package consts
 
 //NOTE: Any dir path must end with "/"

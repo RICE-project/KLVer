@@ -1,0 +1,2 @@
+TEST	2013/12/19 12:41:07 logger.go:41: TEST: [The quick brown fox jumps over the lazy dog.]
+TEST	2013/12/19 12:41:07 logger.go:41: TEST: [gLVSAdm.lib.logger.LoggerManager test. {0xc2000621e0 0xc2000000f0}]

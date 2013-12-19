@@ -97,4 +97,4 @@ create table if not exists user_management(
         password char(50) not null,
         is_enabled bool not null default true
 );
-insert into user_management(username,password) values('admin','4dcdd763e140ca7fabf4ecf12ccb8383bf164d59');
+insert into user_management(username,password) values('admin','2e85d051e63f99d2cc6fe91bdf03693f874fa2b5');
