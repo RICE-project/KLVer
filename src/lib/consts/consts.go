@@ -15,4 +15,6 @@ const(
         CMD_DEPLOY = "../share/libexec/deploy.sh"
         CFG_SESSION_TIMEOUT int64 = 3600  //1 hour
         CFG_GC_INTERVAL = 30 //30 minutes
+	VERISION = "0.0.0-初"
+	NAME = "gLVSAdm"
 )

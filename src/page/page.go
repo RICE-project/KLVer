@@ -7,16 +7,22 @@ import(
         "net/http"
         "html/template"
         "path"
+	"lib/sessions"
+	"lib/logger"
 )
 
 type Page struct {
         lang *map[string] string
+	sessionM *sessions.SessionManager
         templates map[string] *template.Template
+	log *logger.Logger
 }
 
 //Load language and HTML templates.
-func (this *Page) Init(language *map[string] string) error{
+func (this *Page) Init(language *map[string] string, sessionManager *sessions.SessionManager, logs *logger.Logger) error{
         this.lang = language
+	this.sessionM = sessionManager
+	this.log = logs
         fileInfoArr, err:= ioutil.ReadDir(consts.DIR_HTML)
         if errReadDir != nil {
                 return err
@@ -32,6 +38,7 @@ func (this *Page) Init(language *map[string] string) error{
                 templatePath = consts.DIR_HTML + templateName
                 t := template.Must(template.ParseFiles(templatePath))
                 this.templates[templateName] = t
+		this.log.LogInfo("Loading HTML template '", templateName, "' done.")
         }
 }
 
@@ -41,6 +48,15 @@ func (this *Page) GetHandler(name string) http.HandlerFunc {
                 err := templates[name].Execute(writer, this.lang)
                 checkErr(err)
         }
+}
+
+//Return Templates List.
+func (this *Page) GetTemplatesList() []string {
+	templatesList := make([]string)
+	for key, _ := range this.templates {
+		templatesList = append(templatesList, key)
+	}
+	return templatesList
 }
 
 func checkErr(err error) {
