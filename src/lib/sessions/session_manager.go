@@ -5,6 +5,7 @@ import(
         "sync"
         "time"
         "lib/consts"
+	"errors"
 )
 
 //A global Session Manager.
@@ -29,10 +30,14 @@ func (this *SessionManager) CreateSession(value map[string] string) *Session {
 }
 
 //Get a Session.
-func (this *SessionManager) GetSession(sid string) *Session{
-        ses := this.sessionList[sid]
-        ses.updateExpireTime()
-        return ses
+func (this *SessionManager) GetSession(sid string) (*Session, error){
+        ses, ok := this.sessionList[sid]
+	if ok {
+		ses.updateExpireTime()
+		return ses, nil
+	} else {
+		return ses, errors.New("No this session")
+	}
 }
 
 //Logout or time expired.

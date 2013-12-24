@@ -20,7 +20,7 @@ type Page struct {
 
 //Load language and HTML templates.
 func (this *Page) Init(language *map[string] string, sessionManager *sessions.SessionManager, logs *logger.Logger) error{
-        this.lang = language
+        this.SetLang(language)
 	this.sessionM = sessionManager
 	this.log = logs
         fileInfoArr, err:= ioutil.ReadDir(consts.DIR_HTML)
@@ -43,9 +43,16 @@ func (this *Page) Init(language *map[string] string, sessionManager *sessions.Se
 }
 
 //Return http handler.
-func (this *Page) GetHandler(name string) http.HandlerFunc {
+func (this *Page) GetHandler(name string, checkSession bool = consts.CHECK_SESSION_NO) http.HandlerFunc {
         return func(writer http.ResponseWriter, request *http.Request) {
-                err := templates[name].Execute(writer, this.lang)
+		//TODO: if checkSession = true go login
+		if checkSession {
+			_,errSession := this.sesssionM.GetSession()
+			if errSession != nil {
+				errT := this.templates[consts.HTTP_LOGIN].Execute(writer, this.lang)
+			}
+		}
+                err := this.templates[name].Execute(writer, this.lang)
                 checkErr(err)
         }
 }
@@ -57,6 +64,10 @@ func (this *Page) GetTemplatesList() []string {
 		templatesList = append(templatesList, key)
 	}
 	return templatesList
+}
+
+func (this *Page) SetLang(language *map[string] string) {
+	this.lang = language
 }
 
 func checkErr(err error) {
