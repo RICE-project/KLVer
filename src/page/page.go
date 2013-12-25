@@ -9,7 +9,10 @@ import(
         "path"
 	"lib/sessions"
 	"lib/logger"
+	"strings"
 )
+
+const listDir = 0x0001
 
 type Page struct {
         lang *map[string] string
@@ -23,7 +26,16 @@ func (this *Page) Init(language *map[string] string, sessionManager *sessions.Se
         this.SetLang(language)
 	this.sessionM = sessionManager
 	this.log = logs
-        fileInfoArr, errReadDir := ioutil.ReadDir(consts.DIR_HTML)
+	this.templates = make(map[string] *template.Template)
+	errCPage := this.cachePage(consts.DIR_HTML)
+	if errCPage != nil {
+		return errCPage
+	}
+	return nil
+}
+
+func (this *Page) cachePage(dir string) error{
+        fileInfoArr, errReadDir := ioutil.ReadDir(dir)
         if errReadDir != nil {
                 return errReadDir
         }
@@ -31,15 +43,16 @@ func (this *Page) Init(language *map[string] string, sessionManager *sessions.Se
         var templateName, templatePath string
         for _, fileInfo := range fileInfoArr {
                 templateName = fileInfo.Name()
-                if ext := path.Ext(templateName); ext != "html" {
+                if ext := path.Ext(templateName); ext != ".html" {
+			this.log.LogInfo("Skip non-template file: ", templateName)
                         continue
-			this.log.LogInfo("Skip file: ", templateName)
                 }
 
                 templatePath = consts.DIR_HTML + templateName
                 t := template.Must(template.ParseFiles(templatePath))
-                this.templates[templateName] = t
-		this.log.LogInfo("Loading HTML template '", templateName, "' done.")
+		templateNameShort := strings.TrimSuffix(templateName, ".html")  //No extision name.
+                this.templates[templateNameShort] = t
+		this.log.LogInfo("Load HTML template '", templateName, "' done.")
         }
 	return nil
 }
@@ -47,9 +60,18 @@ func (this *Page) Init(language *map[string] string, sessionManager *sessions.Se
 //Return http handler.
 func (this *Page) GetHandler(name string) http.HandlerFunc {
         return func(writer http.ResponseWriter, request *http.Request) {
-                err := this.templates[name].Execute(writer, this.lang)
+		template := this.templates[name]
+                err := template.Execute(writer, this.lang)
                 checkErr(err)
         }
+}
+
+//Return static contents.
+func (this *Page) GetStaticHandler(staticDir string) http.HandlerFunc {
+	return func(writer http.ResponseWriter, request *http.Request){
+		url := request.URL
+		this.log.LogInfo("HTTP GET:", url, "staticDir", staticDir)
+	}
 }
 
 //Return Templates List.

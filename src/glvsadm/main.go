@@ -46,16 +46,23 @@ func main() {
 	}
 	log.LogInfo("Starting HTTP Service...")
 	templates := pag.GetTemplatesList()
-	http.HandleFunc("/", pag.GetHandler("main"))
+	mux := http.NewServeMux()
+
+	mux.HandleFunc("/js", pag.GetStaticHandler(consts.DIR_JS))
+	mux.HandleFunc("/css", pag.GetStaticHandler(consts.DIR_CSS))
+	mux.HandleFunc("/image", pag.GetStaticHandler(consts.DIR_IMAGES))
+
+	mux.HandleFunc("/", pag.GetHandler("main"))
 	for _, t := range templates {
-		http.HandleFunc("/" + t, pag.GetHandler(t))
+		mux.HandleFunc("/" + t, pag.GetHandler(t))
 	}
+	//TODO: ajax
 	httpPort, errPort := cfg.GetConfig("http_port")
 	if errPort != nil {
 		httpPort = "80"
 	}
 	log.LogInfo("HTTP Serve at :", httpPort)
-	errHttp := http.ListenAndServe(":" + httpPort, nil)
+	errHttp := http.ListenAndServe(":" + httpPort, mux)
 	if errHttp != nil {
 		log.LogCritical(errHttp)
 	}
