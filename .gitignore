@@ -1,3 +1,4 @@
 pkg/
 bin/
 share/log/*
+Makefile
