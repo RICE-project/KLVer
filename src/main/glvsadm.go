@@ -1,26 +1,25 @@
 package main
 
 import(
-	"ajax"
+//	"ajax"
 	"page"
 	"config"
 	"lang"
 	"page"
 	"lib/sessions"
-	"lib/db"
+//	"lib/db"
 	"lib/logger"
 	"lib/consts"
 	"net/http"
 )
-func init() {
+
+func main() {
 	cfg := new(config.Config)
 	log := new(logger.Logger)
 	ses := new(sessions.SessionManager)
 	pag := new(page.Page)
 	log.LogInfo("Initializing...")
-}
 
-func main() {
 	log.SetNewLogger()
 	log.LogInfo(consts.NAME, consts.VERISION)
 	log.LogInfo("Reading config file...")
@@ -38,7 +37,9 @@ func main() {
 	for _, t := range templates {
 		http.HandleFunc("/" + t, pag.GetHandler(t))
 	}
-	errHttp := http.ListenAndServe(":" + cfg.GetValue("http_port"))
+	httpPort := cfg.GetValue("http_port")
+	log.LogInfo("HTTP Serve at :", httpPort)
+	errHttp := http.ListenAndServe(":" + httpPort)
 	if errHttp != nil {
 		log.LogCritical(err)
 	}
