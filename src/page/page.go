@@ -23,14 +23,14 @@ func (this *Page) Init(language *map[string] string, sessionManager *sessions.Se
         this.SetLang(language)
 	this.sessionM = sessionManager
 	this.log = logs
-        fileInfoArr, err:= ioutil.ReadDir(consts.DIR_HTML)
+        fileInfoArr, errReadDir := ioutil.ReadDir(consts.DIR_HTML)
         if errReadDir != nil {
-                return err
+                return errReadDir
         }
 
-        var templateName, templelatePath string
+        var templateName, templatePath string
         for _, fileInfo := range fileInfoArr {
-                templateName = fileInfo.Name
+                templateName = fileInfo.Name()
                 if ext := path.Ext(templateName); ext != "html" {
                         continue
                 }
@@ -40,18 +40,12 @@ func (this *Page) Init(language *map[string] string, sessionManager *sessions.Se
                 this.templates[templateName] = t
 		this.log.LogInfo("Loading HTML template '", templateName, "' done.")
         }
+	return nil
 }
 
 //Return http handler.
-func (this *Page) GetHandler(name string, checkSession bool = consts.CHECK_SESSION_NO) http.HandlerFunc {
+func (this *Page) GetHandler(name string) http.HandlerFunc {
         return func(writer http.ResponseWriter, request *http.Request) {
-		//TODO: if checkSession = true go login
-		if checkSession {
-			_,errSession := this.sesssionM.GetSession()
-			if errSession != nil {
-				errT := this.templates[consts.HTTP_LOGIN].Execute(writer, this.lang)
-			}
-		}
                 err := this.templates[name].Execute(writer, this.lang)
                 checkErr(err)
         }
@@ -59,7 +53,7 @@ func (this *Page) GetHandler(name string, checkSession bool = consts.CHECK_SESSI
 
 //Return Templates List.
 func (this *Page) GetTemplatesList() []string {
-	templatesList := make([]string)
+	templatesList := make([]string, 0)
 	for key, _ := range this.templates {
 		templatesList = append(templatesList, key)
 	}

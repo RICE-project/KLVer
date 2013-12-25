@@ -21,4 +21,5 @@ const(
 	HTTP_LOGIN = "login"  //go login.
 	VERISION = "0.0.0-初"
 	NAME = "gLVSAdm"
+	COOKIE_SESSION_NAME = "GSESSION"
 )
