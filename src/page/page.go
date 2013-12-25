@@ -33,6 +33,7 @@ func (this *Page) Init(language *map[string] string, sessionManager *sessions.Se
                 templateName = fileInfo.Name()
                 if ext := path.Ext(templateName); ext != "html" {
                         continue
+			this.log.LogInfo("Skip file: ", templateName)
                 }
 
                 templatePath = consts.DIR_HTML + templateName

@@ -6,17 +6,20 @@ import(
         "time"
         "lib/consts"
 	"errors"
+	"lib/logger"
 )
 
 //A global Session Manager.
 type SessionManager struct{
         lock sync.Mutex
         sessionList map[string] *Session
+	log *logger.Logger
 }
 
 //Init the Session Manager.
-func (this *SessionManager) Init(){
+func (this *SessionManager) Init(log *logger.Logger){
         this.sessionList = make(map[string] *Session)
+	this.log = log
         go this.gc()
 }
 
@@ -47,6 +50,7 @@ func (this *SessionManager) DestorySession(sid string) {
 
 //Sessions which are time-expired should be deleted.
 func (this *SessionManager) gc() {
+	this.log.LogInfo("Session gc Start!")
         gcList := make([]string, 0)
         this.lock.Lock()
         defer this.lock.Unlock()
