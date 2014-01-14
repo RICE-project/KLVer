@@ -22,6 +22,6 @@ const(
 	CHECK_SESSION_NO = false
 	HTTP_LOGIN = "login"  //go login.
 	VERISION = "0.0.0-初"
-	NAME = "gLVSAdm"
+	NAME = "KLVer"
 	COOKIE_SESSION_NAME = "GSESSION"
 )

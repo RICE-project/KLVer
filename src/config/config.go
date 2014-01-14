@@ -20,7 +20,7 @@ type Config struct{
 //Init Config module.
 func (this *Config) Init() error{
         var err error
-        this.cfg, err = readcfg.ReadConfig(consts.DIR_CFG + "glvsadm.cfg")
+        this.cfg, err = readcfg.ReadConfig(consts.DIR_CFG + "klver.cfg")
         return err  //No errors.
 }
 
