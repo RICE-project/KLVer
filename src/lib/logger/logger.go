@@ -20,14 +20,14 @@ type Logger struct{
 //Init Logger
 func (this *Logger) SetNewLogger() error {
         var err error = nil
-        fileNameTemplate := "glvsadm-%s.log"
-        fileName := fmt.Sprintf(fileNameTemplate, time.Now().Format("20060102150405"))
+        fileNameTemplate := "%s-%s.log"
+        fileName := fmt.Sprintf(fileNameTemplate, consts.NAME, time.Now().Format("20060102150405"))
         this.logf, err = os.OpenFile(consts.DIR_LOG + fileName, os.O_RDWR | os.O_CREATE, 0666)
         if err != nil{
                 return err
         }
         this.logs = log.New(this.logf, "\n", log.Ldate | log.Ltime | log.Lshortfile)
-        this.logs.SetPrefix("gLVSAdm\t")
+        this.logs.SetPrefix(consts.NAME + "\t")
         return err
 }
 
