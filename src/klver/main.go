@@ -80,6 +80,7 @@ func main() {
 	//TODO: ajax
 	httpPort, errPort := cfg.GetConfig("http_port")
 	if errPort != nil {
+		log.LogInfo("No http_port found in config file, use :80")
 		httpPort = "80"
 	}
 	log.LogInfo("HTTP Serve at :", httpPort)
