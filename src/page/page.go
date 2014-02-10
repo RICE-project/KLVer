@@ -69,8 +69,10 @@ func (this *Page) GetHandler(name string) http.HandlerFunc {
 //Return static contents.
 func (this *Page) GetStaticHandler(staticDir string) http.HandlerFunc {
 	return func(writer http.ResponseWriter, request *http.Request){
-		url := request.URL
-		this.log.LogInfo("HTTP GET:", url, "staticDir", staticDir)
+		url := request.URL.Path
+		file := staticDir + request.FormValue("file")
+		this.log.LogInfo("HTTP GET:", url, "staticDir", staticDir, "fileName", file)
+		http.ServeFile(writer, request, file)
 	}
 }
 
