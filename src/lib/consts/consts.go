@@ -11,7 +11,7 @@ const(
 	DIR_HTML_ERROR = dIR_PREFIX + "html/error/"
         DIR_JS = dIR_PREFIX + "js/"
         DIR_CSS = dIR_PREFIX + "css/"
-	DIR_IMAGES = dIR_PREFIX + "image/"
+	DIR_IMAGES = dIR_PREFIX + "images/"
         DIR_MAKE = dIR_PREFIX + "make/"
         DIR_LANG = dIR_PREFIX + "lang/"
         DIR_LOG = dIR_PREFIX + "log/"  //logger in src/lib
@@ -21,6 +21,7 @@ const(
 	CHECK_SESSION_YES = true
 	CHECK_SESSION_NO = false
 	HTTP_LOGIN = "login"  //go login.
+        HTTP_DEFAULT = "main" //index page.
 	VERISION = "0.0.0-初"
 	NAME = "KLVer"
 	COOKIE_SESSION_NAME = "GSESSION"

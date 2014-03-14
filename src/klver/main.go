@@ -66,7 +66,7 @@ func main() {
 		log.LogCritical(errPage)
 	}
 	log.LogInfo("Starting HTTP Service...")
-	templates := pag.GetTemplatesList()
+	//templates := pag.GetTemplatesList()
 	mux := http.NewServeMux()
 
 	//Static resource should be writen with "/" end.
@@ -74,10 +74,7 @@ func main() {
 	mux.HandleFunc("/css/", pag.GetStaticHandler(consts.DIR_CSS))
 	mux.HandleFunc("/images/", pag.GetStaticHandler(consts.DIR_IMAGES))
 
-	mux.HandleFunc("/", pag.GetHandler("main"))
-	for _, t := range templates {
-		mux.HandleFunc("/" + t, pag.GetHandler(t))
-	}
+	mux.HandleFunc("/", pag.GetHandler())
 	//TODO: ajax
 	httpPort, errPort := cfg.GetConfig("http_port")
 	if errPort != nil {

@@ -18,6 +18,7 @@ type Page struct {
         lang *map[string] string
 	sessionM *sessions.SessionManager
         templates map[string] *template.Template
+        templatesErr map[string] *template.Template
 	log *logger.Logger
 }
 
@@ -27,10 +28,17 @@ func (this *Page) Init(language *map[string] string, sessionManager *sessions.Se
 	this.sessionM = sessionManager
 	this.log = logs
 	this.templates = make(map[string] *template.Template)
+        this.templatesErr = make(map[string] *template.Template)
 	errCPage := this.cachePage(consts.DIR_HTML)
 	if errCPage != nil {
+                this.log.LogCritical(errCPage)
 		return errCPage
 	}
+        errEPage := this.cachePage(consts.DIR_HTML_ERROR)
+        if errEPage != nil {
+                this.log.LogCritical(errEPage)
+                return errEPage
+        }
 	return nil
 }
 
@@ -48,7 +56,7 @@ func (this *Page) cachePage(dir string) error{
                         continue
                 }
 
-                templatePath = consts.DIR_HTML + templateName
+                templatePath = dir + templateName
                 t := template.Must(template.ParseFiles(templatePath))
 		templateNameShort := strings.TrimSuffix(templateName, ".html")  //No extision name.
                 this.templates[templateNameShort] = t
@@ -58,11 +66,21 @@ func (this *Page) cachePage(dir string) error{
 }
 
 //Return http handler.
-func (this *Page) GetHandler(name string) http.HandlerFunc {
+func (this *Page) GetHandler() http.HandlerFunc {
         return func(writer http.ResponseWriter, request *http.Request) {
-		template := this.templates[name]
-                err := template.Execute(writer, this.lang)
-                checkErr(err)
+                name := strings.TrimLeft(request.URL.Path, "/")
+		template, found := this.templates[name]
+                // Check if the page exists.
+                if found {
+                        err := template.Execute(writer, this.lang)
+                        checkErr(err)
+                } else if name == "" {  // Default page.
+                        template = this.templates[consts.HTTP_DEFAULT]
+                        err := template.Execute(writer, this.lang)
+                        checkErr(err)
+                } else {
+                        this.err404Handler(writer, request)
+                }
         }
 }
 
@@ -70,10 +88,19 @@ func (this *Page) GetHandler(name string) http.HandlerFunc {
 func (this *Page) GetStaticHandler(staticDir string) http.HandlerFunc {
 	return func(writer http.ResponseWriter, request *http.Request){
 		url := request.URL.Path
-		file := staticDir + request.FormValue("file")
-		this.log.LogInfo("HTTP GET:", url, "staticDir", staticDir, "fileName", file)
+		file := staticDir + strings.Split(url, "/")[2]
+                this.log.LogInfo("HTTP GET:", url, "| staticDir:", staticDir, "fileName:", file)
 		http.ServeFile(writer, request, file)
 	}
+}
+
+func (this *Page) err404Handler(writer http.ResponseWriter, request *http.Request) {
+        this.log.LogWarning("404 Not Found when access:", request.URL.Path)
+        writer.Header().Set("Content-Type", "text/html; charset=utf-8")
+        writer.WriteHeader(http.StatusNotFound)
+        template := this.templates["404"]
+        err := template.Execute(writer, this.lang)
+        checkErr(err)
 }
 
 //Return Templates List.
@@ -94,3 +121,5 @@ func checkErr(err error) {
                 panic(err)
         }
 }
+
+
