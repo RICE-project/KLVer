@@ -72,7 +72,7 @@ func main() {
 	//Static resource should be writen with "/" end.
 	mux.HandleFunc("/js/", pag.GetStaticHandler(consts.DIR_JS))
 	mux.HandleFunc("/css/", pag.GetStaticHandler(consts.DIR_CSS))
-	mux.HandleFunc("/image/", pag.GetStaticHandler(consts.DIR_IMAGES))
+	mux.HandleFunc("/images/", pag.GetStaticHandler(consts.DIR_IMAGES))
 
 	mux.HandleFunc("/", pag.GetHandler("main"))
 	for _, t := range templates {
