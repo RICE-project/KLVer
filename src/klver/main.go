@@ -66,7 +66,6 @@ func main() {
 		log.LogCritical(errPage)
 	}
 	log.LogInfo("Starting HTTP Service...")
-	//templates := pag.GetTemplatesList()
 	mux := http.NewServeMux()
 
 	//Static resource should be writen with "/" end.

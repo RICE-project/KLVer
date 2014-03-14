@@ -103,15 +103,6 @@ func (this *Page) err404Handler(writer http.ResponseWriter, request *http.Reques
         checkErr(err)
 }
 
-//Return Templates List.
-func (this *Page) GetTemplatesList() []string {
-	templatesList := make([]string, 0)
-	for key, _ := range this.templates {
-		templatesList = append(templatesList, key)
-	}
-	return templatesList
-}
-
 func (this *Page) SetLang(language *map[string] string) {
 	this.lang = language
 }
