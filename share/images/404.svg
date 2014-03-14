@@ -29,15 +29,25 @@
      inkscape:window-height="711"
      id="namedview51"
      showgrid="false"
-     inkscape:zoom="0.472"
-     inkscape:cx="400"
-     inkscape:cy="250"
+     inkscape:zoom="0.6675088"
+     inkscape:cx="152.63066"
+     inkscape:cy="43.00244"
      inkscape:window-x="-1"
      inkscape:window-y="-1"
      inkscape:window-maximized="1"
      inkscape:current-layer="layer1" />
   <defs
      id="defs4">
+    <pattern
+       inkscape:collect="always"
+       xlink:href="#pattern3045"
+       id="pattern3051"
+       patternTransform="matrix(1.1694236,0,0,2.0537596,19.039988,826.8823)" />
+    <pattern
+       inkscape:collect="always"
+       xlink:href="#pattern3033"
+       id="pattern3039"
+       patternTransform="matrix(1.2359016,0,0,1.0660635,268.01916,709.64889)" />
     <pattern
        inkscape:collect="always"
        xlink:href="#pattern3008"
@@ -210,6 +220,44 @@
              width="454.28571" /></flowRegion><flowPara
            style="font-size:72px"
            id="flowPara3116">Not Found</flowPara></flowRoot>    </pattern>
+    <pattern
+       patternUnits="userSpaceOnUse"
+       width="444.72656"
+       height="187.77344"
+       patternTransform="translate(168.20445,812.38733)"
+       id="pattern3033">
+      <text
+         sodipodi:linespacing="125%"
+         id="text3029"
+         y="174.29688"
+         x="-7.1875"
+         style="font-size:230px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#cccccc;fill-opacity:1;stroke:none;font-family:Sans"
+         xml:space="preserve"><tspan
+           style="font-size:230px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#cccccc;font-family:'方正超粗黑_GBK';-inkscape-font-specification:'方正超粗黑_GBK'"
+           y="174.29688"
+           x="-7.1875"
+           id="tspan3031"
+           sodipodi:role="line">404</tspan></text>
+    </pattern>
+    <pattern
+       patternUnits="userSpaceOnUse"
+       width="662.76562"
+       height="74.390625"
+       patternTransform="translate(65.650158,867.13654)"
+       id="pattern3045">
+      <text
+         sodipodi:linespacing="125%"
+         id="text3041"
+         y="72.9375"
+         x="-6.328125"
+         style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+         xml:space="preserve"><tspan
+           style="font-size:96px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:'文泉驿等宽微米黑';-inkscape-font-specification:'文泉驿等宽微米黑 Bold'"
+           y="72.9375"
+           x="-6.328125"
+           id="tspan3043"
+           sodipodi:role="line">Not Found...</tspan></text>
+    </pattern>
   </defs>
   <metadata
      id="metadata7">
@@ -227,72 +275,15 @@
      transform="translate(0,-752.36215)"
      id="layer1">
     <rect
-       width="324.21875"
-       height="146.97266"
-       x="105.57298"
-       y="822.38403"
-       id="rect3014"
-       style="fill:url(#pattern3127);stroke:none;filter:url(#filter3050)" />
+       style="fill:url(#pattern3039);stroke:none"
+       width="549.63824"
+       height="200.17842"
+       x="268.0192"
+       y="709.6488"
+       id="rect3037"
+       transform="matrix(0.98439747,0.17595916,-0.17595916,0.98439747,0,0)" />
     <g
-       id="g3946"
-       style="filter:url(#filter3970)"
-       transform="translate(31.898305,201.0339)">
-      <g
-         id="g3144"
-         style="fill:#ff0000;fill-opacity:1;stroke:#000000;stroke-opacity:1">
-        <path
-           d="M 575.71429,50 462.85714,250"
-           transform="translate(0,552.36215)"
-           id="path3130"
-           style="fill:#ff0000;fill-opacity:1;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-           inkscape:connector-curvature="0" />
-        <path
-           d="M 575.71429,50 680,250 462.85714,250"
-           transform="translate(0,552.36215)"
-           id="path3132"
-           style="fill:#ff0000;fill-opacity:1;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-           inkscape:connector-curvature="0" />
-        <path
-           d="M 575.71429,50 680,250 462.85714,250"
-           transform="translate(0,552.36215)"
-           id="path3142"
-           style="fill:#ff0000;fill-opacity:1;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-           inkscape:connector-curvature="0" />
-      </g>
-      <g
-         transform="matrix(0.81520967,0,0,0.81520967,105.59448,135.78974)"
-         id="g3149"
-         style="fill:#ffff00;fill-opacity:1">
-        <path
-           d="M 575.71429,50 462.85714,250"
-           transform="translate(0,552.36215)"
-           id="path3151"
-           style="fill:#ffff00;fill-opacity:1;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-           inkscape:connector-curvature="0" />
-        <path
-           d="M 575.71429,50 680,250 462.85714,250"
-           transform="translate(0,552.36215)"
-           id="path3153"
-           style="fill:#ffff00;fill-opacity:1;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-           inkscape:connector-curvature="0" />
-        <path
-           d="M 575.71429,50 680,250 462.85714,250"
-           transform="translate(0,552.36215)"
-           id="path3155"
-           style="fill:#ffff00;fill-opacity:1;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-           inkscape:connector-curvature="0" />
-      </g>
-      <text
-         x="544.68414"
-         y="779.19366"
-         id="text3138"
-         xml:space="preserve"
-         style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
-         sodipodi:linespacing="125%"><tspan
-           x="544.68414"
-           y="779.19366"
-           id="tspan3140"
-           style="font-size:144px">?</tspan></text>
-    </g>
+       id="g3861"
+       transform="matrix(-0.48097841,0.53079885,-0.53079885,-0.48097841,649.56642,1248.5005)" />
   </g>
 </svg>
