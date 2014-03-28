@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg id="svg2" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" height="300" width="800" version="1.2" xmlns:cc="http://creativecommons.org/ns#" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:dc="http://purl.org/dc/elements/1.1/">
+ <defs id="defs4">
+  <pattern id="pattern3039" xlink:href="#pattern3033" patternTransform="matrix(1.2359016,0,0,1.0660635,268.01916,709.64889)"/>
+  <pattern id="pattern3033" width="444.72656" patternUnits="userSpaceOnUse" patternTransform="translate(168.20445,812.38733)" height="187.77344">
+   <text id="text3029" style="letter-spacing:0px;word-spacing:0px;" line-height="125%" font-weight="normal" font-size="230px" font-style="normal" y="174.29688" x="-7.1875" font-family="Sans" xml:space="preserve" fill="#cccccc"><tspan id="tspan3031" font-weight="normal" font-size="230px" font-style="normal" font-stretch="normal" font-variant="normal" y="174.29688" x="-7.1875" font-family="&apos;方正超粗黑_GBK&apos;" fill="#cccccc">404</tspan></text>
+  </pattern>
+ </defs>
+ <metadata id="metadata7">
+  <rdf:RDF>
+   <cc:Work rdf:about="">
+    <dc:format>image/svg+xml</dc:format>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:title/>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <g id="layer1" transform="translate(0,-752.36215)">
+  <rect id="rect3037" transform="matrix(0.98439747,0.17595916,-0.17595916,0.98439747,0,0)" height="200.18" width="549.64" y="709.65" x="268.02" fill="url(#pattern3039)"/>
+ </g>
+</svg>

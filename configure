@@ -11,18 +11,18 @@ else
 fi
 
 export GOPATH=$(pwd)
-echo "
+echo -e "
 all: build
 
 build:
-        export GOPATH=${GOPATH}
-        mkdir -p ${GOPATH}/bin
-        go get github.com/tonychee7000/mysql
-        go build klver
-        mv klver ${GOPATH}/bin
-        mkdir -p ${GOPATH}/share/log
+\texport GOPATH=${GOPATH}
+\tmkdir -p ${GOPATH}/bin
+\tgo get github.com/tonychee7000/mysql
+\tgo build klver
+\tmv klver ${GOPATH}/bin
+\tmkdir -p ${GOPATH}/share/log
         
 clean:
-        rm -rf ${GOPATH}/pkg
-        rm -rf ${GOPATH}/bin
+\trm -rf ${GOPATH}/pkg
+\trm -rf ${GOPATH}/bin
 " > Makefile
