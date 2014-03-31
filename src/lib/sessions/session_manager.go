@@ -1,40 +1,39 @@
-
 package sessions
 
-import(
-        "sync"
-        "time"
-        "lib/consts"
+import (
 	"errors"
+	"lib/consts"
 	"lib/logger"
+	"sync"
+	"time"
 )
 
 //A global Session Manager.
-type SessionManager struct{
-        lock sync.Mutex
-        sessionList map[string] *Session
-	log *logger.Logger
+type SessionManager struct {
+	lock        sync.Mutex
+	sessionList map[string]*Session
+	log         *logger.Logger
 }
 
 //Init the Session Manager.
-func (this *SessionManager) Init(log *logger.Logger){
-        this.sessionList = make(map[string] *Session)
+func (this *SessionManager) Init(log *logger.Logger) {
+	this.sessionList = make(map[string]*Session)
 	this.log = log
-        go this.gc()
+	go this.gc()
 }
 
 //Creat a new Session.
-func (this *SessionManager) CreateSession(value map[string] string) *Session {
-        b := new(Session)
-        b.newSession(value)
-        sid := b.GetSid()
-        this.sessionList[sid] = b
-        return b
+func (this *SessionManager) CreateSession(value map[string]interface{}) *Session {
+	b := new(Session)
+	b.newSession(value)
+	sid := b.GetSid()
+	this.sessionList[sid] = b
+	return b
 }
 
 //Get a Session.
-func (this *SessionManager) GetSession(sid string) (*Session, error){
-        ses, ok := this.sessionList[sid]
+func (this *SessionManager) GetSession(sid string) (*Session, error) {
+	ses, ok := this.sessionList[sid]
 	if ok {
 		ses.updateExpireTime()
 		return ses, nil
@@ -45,24 +44,24 @@ func (this *SessionManager) GetSession(sid string) (*Session, error){
 
 //Logout or time expired.
 func (this *SessionManager) DestorySession(sid string) {
-        delete(this.sessionList, sid)
+	delete(this.sessionList, sid)
 }
 
 //Sessions which are time-expired should be deleted.
 func (this *SessionManager) gc() {
 	this.log.LogInfo("Session gc Start!")
-        gcList := make([]string, 0)
-        this.lock.Lock()
-        defer this.lock.Unlock()
-        if len(this.sessionList) !=0 {
-                for key, value := range this.sessionList {
-                        if value.isExpired() {
-                                gcList = append(gcList, key)
-                        }
-                }
-                for _, gcSid := range gcList {
-                        this.DestorySession(gcSid)
-                }
-        }
-        time.AfterFunc(consts.CFG_GC_INTERVAL * time.Minute, func() {this.gc()})
+	gcList := make([]string, 0)
+	this.lock.Lock()
+	defer this.lock.Unlock()
+	if len(this.sessionList) != 0 {
+		for key, value := range this.sessionList {
+			if value.isExpired() {
+				gcList = append(gcList, key)
+			}
+		}
+		for _, gcSid := range gcList {
+			this.DestorySession(gcSid)
+		}
+	}
+	time.AfterFunc(consts.CFG_GC_INTERVAL*time.Minute, func() { this.gc() })
 }

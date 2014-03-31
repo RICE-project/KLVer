@@ -10,5 +10,19 @@ else
 	exit 1
 fi
 
-GOPATH=$(pwd)
-echo -e "all: build\n\nbuild:\n\texport GOPATH=${GOPATH}\n\tmkdir -p ${GOPATH}/bin\n\tgo get github.com/tonychee7000/mysql\n\tgo build glvsadm\n\tmv glvsadm ${GOPATH}/bin" > Makefile
+export GOPATH=$(pwd)
+echo -e "
+all: build
+
+build:
+\texport GOPATH=${GOPATH}
+\tmkdir -p ${GOPATH}/bin
+\tgo get github.com/tonychee7000/mysql
+\tgo build klver
+\tmv klver ${GOPATH}/bin
+\tmkdir -p ${GOPATH}/share/log
+        
+clean:
+\trm -rf ${GOPATH}/pkg
+\trm -rf ${GOPATH}/bin
+" > Makefile

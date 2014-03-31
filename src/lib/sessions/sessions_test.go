@@ -3,34 +3,34 @@ package sessions
 import "testing"
 import "time"
 
-var data map[string] string = map[string] string{"name":"Admin", "role":"1", "age":"23", "isAdmin":"0"}
+var data map[string]string = map[string]string{"name": "Admin", "role": "1", "age": "23", "isAdmin": "0"}
 
 func TestTypeSession(t *testing.T) {
-        a := new(Session)
-        a.newSession(data)
-        t.Log("Session:", a)
+	a := new(Session)
+	a.newSession(data)
+	t.Log("Session:", a)
 
-        t.Log("ExpireTime: ", a.getExpireTime())
-        t.Log("Sid: ", a.GetSid())
+	t.Log("ExpireTime: ", a.getExpireTime())
+	t.Log("Sid: ", a.GetSid())
 
-        value := a.GetValue()
+	value := a.GetValue()
 
-        for key,val := range value {
-                t.Log("Key: ", key, "\tValue:", val)
-        }
+	for key, val := range value {
+		t.Log("Key: ", key, "\tValue:", val)
+	}
 }
 
 func TestTypeSessionManager(t *testing.T) {
-        a := new(SessionManager)
-        a.Init()
-        b:= a.CreateSession(data)
-        t.Log("Session Manager: ", a)
-        sid := b.GetSid()
-        t.Log("SID: ", sid)
-        t.Log("Session: ", b)
-        data = map[string] string{"name":"Test"}
-        b.SetValue(data)
-        time.Sleep(3 * time.Second)
-        c := a.GetSession(sid)
-        t.Log("Session: ", c)
+	a := new(SessionManager)
+	a.Init()
+	b := a.CreateSession(data)
+	t.Log("Session Manager: ", a)
+	sid := b.GetSid()
+	t.Log("SID: ", sid)
+	t.Log("Session: ", b)
+	data = map[string]string{"name": "Test"}
+	b.SetValue(data)
+	time.Sleep(3 * time.Second)
+	c := a.GetSession(sid)
+	t.Log("Session: ", c)
 }
