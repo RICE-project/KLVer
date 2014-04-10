@@ -87,12 +87,12 @@ func (this *Page) GetHandler() http.HandlerFunc {
 //Return static contents.
 func (this *Page) GetStaticHandler(staticDir string) http.HandlerFunc {
 	return func(writer http.ResponseWriter, request *http.Request) {
-		url := request.URL.Path
-		file := staticDir + strings.Split(url, "/")[2]
+        url := request.URL.Path
+        file := staticDir + strings.Split(url, "/")[2]
         //HACK: for svg
-        hackHeader(url, &writer)
-		this.log.LogInfo("HTTP GET:", url, "| staticDir:", staticDir, "fileName:", file)
-		http.ServeFile(writer, request, file)
+        writer.Header().Set("Content-Type", hackHeader(url) + "; charset=utf-8")
+        this.log.LogInfo("HTTP GET:", url, "| staticDir:", staticDir, "fileName:", file)
+        http.ServeFile(writer, request, file)
 	}
 }
 
@@ -116,14 +116,16 @@ func checkErr(err error) {
 }
 
 //HACK: for incorrect mime-type (such as svg)
-func hackHeader(url string, writer *http.ResponseWriter){
+func hackHeader(url string) string{
     ext := path.Ext(url)
+    mimeType := ""
     switch ext {
     case ".svg":
-        (*writer).Header().Set("Content-Type", "image/svg+xml; charset=utf-8")
+        mimeType = "image/svg+xml"
     case ".css":
-        (*writer).Header().Set("Content-Type", "text/css; charset=utf-8")
+        mimeType = "text/css"
     case ".js":
-        (*writer).Header().Set("Content-Type", "text/javascript; charset=utf-8")
+        mimeType = "text/javascript"
     }
+    return mimeType
 }
