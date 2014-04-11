@@ -87,12 +87,13 @@ func (this *Page) GetHandler() http.HandlerFunc {
 //Return static contents.
 func (this *Page) GetStaticHandler(staticDir string) http.HandlerFunc {
 	return func(writer http.ResponseWriter, request *http.Request) {
-        url := request.URL.Path
-        file := staticDir + strings.Split(url, "/")[2]
-        //HACK: for svg
-        writer.Header().Set("Content-Type", hackHeader(url) + "; charset=utf-8")
-        this.log.LogInfo("HTTP GET:", url, "| staticDir:", staticDir, "fileName:", file)
-        http.ServeFile(writer, request, file)
+		url := request.URL.Path
+		urla := strings.Split(url, "/")
+		file := staticDir + urla[len(urla)-1] // real file path.
+		//HACK: for svg
+		writer.Header().Set("Content-Type", hackHeader(url)+"; charset=utf-8")
+		this.log.LogInfo("HTTP GET:", url, "| staticDir:", staticDir, "fileName:", file)
+		http.ServeFile(writer, request, file)
 	}
 }
 
@@ -116,16 +117,16 @@ func checkErr(err error) {
 }
 
 //HACK: for incorrect mime-type (such as svg)
-func hackHeader(url string) string{
-    ext := path.Ext(url)
-    mimeType := ""
-    switch ext {
-    case ".svg":
-        mimeType = "image/svg+xml"
-    case ".css":
-        mimeType = "text/css"
-    case ".js":
-        mimeType = "text/javascript"
-    }
-    return mimeType
+func hackHeader(url string) string {
+	ext := path.Ext(url)
+	mimeType := ""
+	switch ext {
+	case ".svg":
+		mimeType = "image/svg+xml"
+	case ".css":
+		mimeType = "text/css"
+	case ".js":
+		mimeType = "text/javascript"
+	}
+	return mimeType
 }
