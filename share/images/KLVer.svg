@@ -16,7 +16,40 @@
    inkscape:version="0.48.4 r9939"
    sodipodi:docname="KLVer.svg">
   <defs
-     id="defs4" />
+     id="defs4">
+    <filter
+       id="filter4454"
+       style="color-interpolation-filters:sRGB;"
+       inkscape:label="Drop Shadow">
+      <feFlood
+         id="feFlood4456"
+         flood-opacity="0.65"
+         flood-color="rgb(0,0,0)"
+         result="flood" />
+      <feComposite
+         id="feComposite4458"
+         in2="SourceGraphic"
+         in="flood"
+         operator="in"
+         result="composite1" />
+      <feGaussianBlur
+         id="feGaussianBlur4460"
+         in="composite"
+         stdDeviation="1.5"
+         result="blur" />
+      <feOffset
+         id="feOffset4462"
+         dx="3"
+         dy="3"
+         result="offset" />
+      <feComposite
+         id="feComposite4464"
+         in2="offset"
+         in="SourceGraphic"
+         operator="over"
+         result="composite2" />
+    </filter>
+  </defs>
   <sodipodi:namedview
      id="base"
      pagecolor="#ffffff"
@@ -24,9 +57,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.5"
-     inkscape:cx="66.521884"
-     inkscape:cy="156.79643"
+     inkscape:zoom="2"
+     inkscape:cx="70.685341"
+     inkscape:cy="85.233596"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -62,7 +95,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -74,7 +107,8 @@
      transform="translate(-190.45089,-550.54075)">
     <g
        id="g3123"
-       transform="matrix(2.2329619,0,0,2.2329619,-392.82491,351.13374)">
+       transform="matrix(2.2329619,0,0,2.2329619,-392.82491,351.13374)"
+       style="filter:url(#filter4454)">
       <g
          id="flowRoot2985"
          style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
