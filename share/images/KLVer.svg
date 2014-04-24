@@ -18,32 +18,32 @@
   <defs
      id="defs4">
     <filter
-       id="filter4454"
+       id="filter3060"
        style="color-interpolation-filters:sRGB;"
        inkscape:label="Drop Shadow">
       <feFlood
-         id="feFlood4456"
-         flood-opacity="0.65"
+         id="feFlood3062"
+         flood-opacity="0.6"
          flood-color="rgb(0,0,0)"
          result="flood" />
       <feComposite
-         id="feComposite4458"
+         id="feComposite3064"
          in2="SourceGraphic"
          in="flood"
          operator="in"
          result="composite1" />
       <feGaussianBlur
-         id="feGaussianBlur4460"
+         id="feGaussianBlur3066"
          in="composite"
          stdDeviation="1.5"
          result="blur" />
       <feOffset
-         id="feOffset4462"
+         id="feOffset3068"
          dx="3"
-         dy="3"
+         dy="6"
          result="offset" />
       <feComposite
-         id="feComposite4464"
+         id="feComposite3070"
          in2="offset"
          in="SourceGraphic"
          operator="over"
@@ -58,10 +58,10 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="2"
-     inkscape:cx="70.685341"
-     inkscape:cy="85.233596"
+     inkscape:cx="96.578447"
+     inkscape:cy="117.34046"
      inkscape:document-units="px"
-     inkscape:current-layer="layer1"
+     inkscape:current-layer="g3123"
      showgrid="false"
      showguides="true"
      inkscape:guide-bbox="true"
@@ -111,7 +111,7 @@
        style="filter:url(#filter4454)">
       <g
          id="flowRoot2985"
-         style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+         style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;filter:url(#filter3060)"
          transform="translate(172.85714,30)">
         <path
            sodipodi:nodetypes="ccccccccccszccccczsccccccc"

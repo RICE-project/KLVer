@@ -1,19 +1,36 @@
 <!DOCTYPE html>
 <html>
         <head>
-                <meta charset="utf8"/>
+                <meta charset="utf-8"/>
                 <title>{{.HTML_TITLE_MAIN}}</title>
                 <script type="text/javascript" src="js/jquery.js"></script>
                 <link rel="stylesheet" href="css/main.css"/>
         </head>
         <body>
-                <div class="banner">
+                <div class="header">
+                    <div class="banner">
+                        <img src="images/KLVer.png" height="96">
+                    </div>
+                    <div class="info">
+                        <span>{{.HTML_LOGIN_AS}}</span>
+                        <span id="lab_loginname"></span>
+                        <button id="btn_logout">{{.HTML_BTN_LOGOUT}}</button>
+                    </div>
                 </div>
                 <div class="sidebar_l">
                 </div>
                 <div class="content">
                 </div>
                 <div class="footer">
+                    <p>
+                        <span>
+                            {{.HTML_VERINFO}}
+                        </span>
+                        <a href="mailto:{{.HTML_AUTHOR_MAIL}}">{{.HTML_AUTHOR}}</a>
+                    </p>
+                    <p>
+                        <a href="{{.HTML_GITHUB_PAGE}}">{{.HTML_GITHUB}}</a>
+                    </p>
                 </div>
         </body>
 </html>
