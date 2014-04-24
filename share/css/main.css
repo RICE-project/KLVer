@@ -1,3 +1,9 @@
+@font-face {
+    font-family : "Arial Wide";
+    font-stretch : ultra-expanded;
+
+}
+
 html, body {
     margin: 0 0;
     background-color: #eee;
@@ -35,40 +41,61 @@ button:active {
 }
 
 .header {
-    height: 96px;
-    padding: 5px 5px;
-    background: -webkit-linear-gradient(white, lightgray, #DDD);
-    background: -moz-linear-gradient(white, lightgray, #DDD);
-    background: -ms-linear-gradient(white, lightgray, #DDD);
-    background: linear-gradient(white, lightgray, #DDD);
+    height: 72px;
+    padding: 5px 15px;
+    background: -webkit-linear-gradient(lightgray, #DDD);
+    background: -moz-linear-gradient(lightgray, #DDD);
+    background: -ms-linear-gradient(lightgray, #DDD);
+    background: linear-gradient(lightgray, #DDD);
     border-bottom: 2px solid lightgray;
+    box-shadow: 0 0 3px;
 }
 .header .banner {
     float: left;
 }
 
+.header .banner * {
+    vertical-align: middle;
+}
+
 .header .info {
     float: right;
     font-size: 14px;
+    margin-top: 42px;
 }
 
-.sidebar_l {
-    border-right: 2px solid lightgray;
-    width: 256px;
+
+.header .banner span.title{
+    font-family: "Arial Wide";
+    font-size:36px;
+}
+
+.main {
     height: 100%;
 }
 
 .footer {
-    height: 96px;
+    height: 64px;
     padding: 5px 5px;
     text-align: center;
     border-top: 2px solid lightgray;
     font-size: 12px;
 
-    background: -webkit-linear-gradient(#DDD, lightgray, white);
-    background: -moz-linear-gradient(#DDD, lightgray, white);
-    background: -ms-linear-gradient(#DDD, lightgray, white);
-    background: linear-gradient(#DDD, lightgray, white);
+    background: -webkit-linear-gradient(#DDD, lightgray);
+    background: -moz-linear-gradient(#DDD, lightgray);
+    background: -ms-linear-gradient(#DDD, lightgray);
+    background: linear-gradient(#DDD, lightgray);
+}
+.content {
+    float: left;
+    height: 100%;
+}
+
+.sidebar_l {
+    float: left;
+    width: 256px;
+    border-right: 2px solid #888;
+    height: 100%;
 }
 
 .footer p {
