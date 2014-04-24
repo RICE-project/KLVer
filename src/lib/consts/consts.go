@@ -25,4 +25,6 @@ const (
 	VERISION                  = "0.0.0-初"
 	NAME                      = "KLVer"
 	COOKIE_SESSION_NAME       = "GSESSION"
+    AUTHOR                    = "TonyChyi"
+    AUTHOR_MAIL               = "tonychee1989@gmail.com"
 )
