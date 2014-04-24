@@ -22,7 +22,7 @@ const (
 	CHECK_SESSION_NO          = false
 	HTTP_LOGIN                = "login" //go login.
 	HTTP_DEFAULT              = "main"  //index page.
-	VERISION                  = "0.0.0-初"
+	VERSION                  = "0.0.0-初"
 	NAME                      = "KLVer"
 	COOKIE_SESSION_NAME       = "GSESSION"
     AUTHOR                    = "TonyChyi"

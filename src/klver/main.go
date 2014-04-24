@@ -46,7 +46,7 @@ func main() {
 	}
 	log.LogInfo("Initializing...")
 
-	log.LogInfo(consts.NAME, consts.VERISION)
+	log.LogInfo(consts.NAME, consts.VERSION)
 	log.LogInfo("Reading config file...")
 	errCfg := cfg.Init()
 	if errCfg != nil {

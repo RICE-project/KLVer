@@ -12,17 +12,18 @@ fi
 
 export GOPATH=$(pwd)
 echo -e "
-all: build
+export GOPATH=${GOPATH}
+
+all: clean build
 
 build:
-\texport GOPATH=${GOPATH}
-\tmkdir -p ${GOPATH}/bin
+\tmkdir -p \$(GOPATH)/bin
 \tgo get github.com/tonychee7000/mysql
 \tgo build klver
-\tmv klver ${GOPATH}/bin
-\tmkdir -p ${GOPATH}/share/log
+\tmv klver \$(GOPATH)/bin
+\tmkdir -p \$(GOPATH)/share/log
         
 clean:
-\trm -rf ${GOPATH}/pkg
-\trm -rf ${GOPATH}/bin
+\trm -rf \$(GOPATH)/pkg
+\trm -rf \$(GOPATH)/bin
 " > Makefile
