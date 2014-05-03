@@ -2,7 +2,7 @@
 //
 //config file is
 //
-//    <glvsadm_dir>/share/etc/glvsadm.cfg
+//    <klver_dir>/share/etc/klver.cfg
 //
 package config
 
@@ -20,7 +20,7 @@ type Config struct {
 //Init Config module.
 func (this *Config) Init() error {
 	var err error
-	this.cfg, err = readcfg.ReadConfig(consts.DIR_CFG + "klver.cfg")
+	this.cfg, err = readcfg.ReadConfig(consts.DIR_CFG + consts.CFG_FILE)
 	return err //No errors.
 }
 

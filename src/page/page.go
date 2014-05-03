@@ -7,9 +7,11 @@ import (
 	"lib/consts"
 	"lib/logger"
 	"lib/sessions"
+    "lib/readcfg"
 	"net/http"
 	"path"
 	"strings"
+    "fmt"
 )
 
 const listDir = 0x0001
@@ -20,11 +22,18 @@ type Page struct {
 	templates    map[string]*template.Template
 	templatesErr map[string]*template.Template
 	log          *logger.Logger
+    mimeType     map[string]string
 }
 
 //Load language and HTML templates.
 func (this *Page) Init(language *map[string]string, sessionManager *sessions.SessionManager, logs *logger.Logger) error {
+    var errMime error
 	this.SetLang(language)
+    this.mimeType, errMime = getMimetype()
+    if errMime != nil {
+        this.log.LogCirtical(errMime)
+        return errMime
+    }
 	this.sessionM = sessionManager
 	this.log = logs
 	this.templates = make(map[string]*template.Template)
@@ -91,7 +100,7 @@ func (this *Page) GetStaticHandler(staticDir string) http.HandlerFunc {
 		urla := strings.Split(url, "/")
 		file := staticDir + urla[len(urla)-1] // real file path.
 		//HACK: for svg
-		writer.Header().Set("Content-Type", hackHeader(url)+"; charset=utf-8")
+		//writer.Header().Set("Content-Type", hackHeader(url)+"; charset=utf-8")
 		this.log.LogInfo("HTTP GET:", url, "| staticDir:", staticDir, "fileName:", file)
 		http.ServeFile(writer, request, file)
 	}
@@ -108,6 +117,14 @@ func (this *Page) err404Handler(writer http.ResponseWriter, request *http.Reques
 
 func (this *Page) SetLang(language *map[string]string) {
 	this.lang = language
+}
+
+func (this *Page) setMimeType(writer *http.ResonseWriter, url string){
+    ext := path.Ext(url)
+    mimeType, found := this.mimeType[ext]
+    if found {
+        (*writer).Header().set("Content-Type", fmt.Sprintf("%s; charset=utf-8", mimeType))
+    }
 }
 
 func checkErr(err error) {
@@ -129,4 +146,9 @@ func hackHeader(url string) string {
 		mimeType = "text/javascript"
 	}
 	return mimeType
+}
+
+func getMimetype() (map[string]string,error){
+    mime, err := readcfg.ReadConfig(consts.DIR_CFG + consts.CFG_MIMETYPE_FILE)
+    return mime, err
 }

@@ -9,8 +9,23 @@ else
 	echo "not found."
 	exit 1
 fi
+ARG_PREFIX=$1
 
-export GOPATH=$(pwd)
+if [ 'x' != "${ARG_PREFIX}x" ];then
+    PREFIX=$(echo $ARG_PREFIX|sed 's/--prefix=//'|sed 's/\//\\\//g')
+else
+    PREFIX='\/usr\/local\/klver'
+fi
+
+
+PREFIXs=$(echo $PREFIX|sed 's/\\//g')
+
+echo -n "Prefix ... "
+echo $PREFIXs
+
+cat 'src/lib/consts/dir.go.in'|sed "s/{PREFIX}/$PREFIX/" > src/lib/consts/dir.go
+
+export GOPATH=$PREFIXs
 echo -e "
 export GOPATH=${GOPATH}
 
