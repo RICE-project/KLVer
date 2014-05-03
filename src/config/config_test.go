@@ -19,7 +19,7 @@ func TestReadConfig(t *testing.T) {
 func TestGetDSN(t *testing.T) {
 	r := a.GetDSN()
 	t.Log(r)
-	if r != "glvsadm:glvsadm@tcp(localhost:3306)/glvsadm?charset=utf8" {
+	if r != "klver:klver@tcp(localhost:3306)/klver?charset=utf8" {
 		t.Errorf("Err: GetDSN() failed. get %s", r)
 	}
 }

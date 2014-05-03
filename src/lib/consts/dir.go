@@ -1,3 +1,3 @@
 package consts
 
-const DIR = "/usr/local/klver"
+const DIR = "/home/tonychyi/klver/"

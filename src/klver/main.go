@@ -83,7 +83,7 @@ func main() {
 		httpPort = "80"
 	}
 	log.LogInfo("HTTP Serve at :", httpPort)
-	errHttp := http.ListenAndServe(":"+httpPort, mux)
+	errHttp := http.ListenAndServe(":" + httpPort, mux)
 	if errHttp != nil {
 		log.LogCritical(errHttp)
 	}

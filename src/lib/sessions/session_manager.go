@@ -61,6 +61,7 @@ func (this *SessionManager) gc() {
 		}
 		for _, gcSid := range gcList {
 			this.DestorySession(gcSid)
+            this.log.LogInfo("Session ID=", gcSid," is expired.")
 		}
 	}
 	time.AfterFunc(consts.CFG_GC_INTERVAL*time.Minute, func() { this.gc() })

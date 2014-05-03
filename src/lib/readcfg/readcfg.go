@@ -11,52 +11,39 @@ ReacConfig is used to read text config file.
 
 any config should be writen like this.
 
-    key1 = value1
-    key2 = value2
-    key3 = value3
+    key1=value1
+    key2=value2
+    key3=value3
     ...
 
 Blank line(s) and line(s) started with '#' will be skiped.
+
 */
 func ReadConfig(filename string) (map[string]string, error) {
+	var key, value, lineTest string
 	cfg := make(map[string]string)
 	b, err := ioutil.ReadFile(filename)
-	var key, value string
-/*	j := 0
-	line := make([]byte, 5)
-	for i, s := range b {
-		if s == 10 {
-			line = b[j:i]
-			j = i + 1
-		} else {
-			continue
-		}
-		if len(line) == 0 || line[0] == '#' {
-			continue
-		} //Blank line and start with '#' will be skiped
-		for k, t := range line {
-			if t == '=' {
-				key = strings.Replace(string(line[:k])
-				value = string(line[k+1:])
-				break //No need go on.
-			}
-		}
-		cfg[key] = value
-	}
-	return cfg, err
-    */
-    lines := strings.Split(string(b), "\n")
-    lineView := make([]string, 2)
+    cfgs := make([]string, 2)
+    lines := strings.Split(
+        strings.Replace(string(b), "\r", "", -1),  // Get rid of \r
+        "\n")
     for _, line := range(lines) {
-        line = strings.Replace(line, "\r", "", -1)
-        line = strings.Replace(line, " ", "", -1)
-        if len(line) == 0 || line[0] == '#' {
+        lineTest = strings.Replace(line, " ", "", -1)
+        lineTest = strings.Replace(lineTest, "\t", "", -1)
+        if len(lineTest) == 0 || line[0] == '#' {
             continue
-        }
-        lineView = strings.Split(line, "=")
-        key = lineView[0]
-        value = lineView[1]
+        } // Blank line and start with '#' will be skiped.
+        cfgs = strings.SplitN(line, "=", 2)
+        key = strings.Replace(cfgs[0], " ", "", -1)
+        key = strings.Replace(key, "\t", "", -1)
+        value = cfgs[1]
         cfg[key] = value
     }
-    return cfg, err
+	return cfg, err
+}
+
+func TrimString(str string)string{
+    out := strings.Replace(str, " ", "", -1)
+    out = strings.Replace(out, "\t", "", -1)
+    return out
 }

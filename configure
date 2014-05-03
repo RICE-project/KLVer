@@ -14,7 +14,7 @@ ARG_PREFIX=$1
 if [ 'x' != "${ARG_PREFIX}x" ];then
     PREFIX=$(echo $ARG_PREFIX|sed 's/--prefix=//'|sed 's/\//\\\//g')
 else
-    PREFIX='\/usr\/local\/klver'
+    PREFIX=$(pwd|sed 's/\//\\\//g')
 fi
 
 
@@ -23,9 +23,9 @@ PREFIXs=$(echo $PREFIX|sed 's/\\//g')
 echo -n "Prefix ... "
 echo $PREFIXs
 
-cat 'src/lib/consts/dir.go.in'|sed "s/{PREFIX}/$PREFIX/" > src/lib/consts/dir.go
+cat 'src/lib/consts/dir.go.in'|sed "s/{PREFIX}/$PREFIX\//" > src/lib/consts/dir.go
 
-export GOPATH=$PREFIXs
+export GOPATH=$(pwd)
 echo -e "
 export GOPATH=${GOPATH}
 
