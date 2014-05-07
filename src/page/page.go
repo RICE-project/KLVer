@@ -102,7 +102,7 @@ func (this *Page) GetStaticHandler(staticDir string) http.HandlerFunc {
         urla := strings.Split(url, "/")
         file := staticDir + urla[len(urla)-1] // real file path.
         this.setMimeType(&writer, url)
-        this.log.LogInfo("HTTP GET:", url, "| staticDir:", staticDir, "fileName:", file)
+        this.log.LogInfo("HTTP GET:", url, "\t| staticDir:", staticDir, "\tfileName:", file)
         http.ServeFile(writer, request, file)
     }
 }
