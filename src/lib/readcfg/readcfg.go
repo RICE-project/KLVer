@@ -28,20 +28,22 @@ func ReadConfig(filename string) (map[string]string, error) {
         strings.Replace(string(b), "\r", "", -1),  // Get rid of \r
         "\n")
     for _, line := range(lines) {
-        lineTest = strings.Replace(line, " ", "", -1)
-        lineTest = strings.Replace(lineTest, "\t", "", -1)
+
+        // Test blank lines.
+        lineTest = TrimString(line)
         if len(lineTest) == 0 || line[0] == '#' {
             continue
         } // Blank line and start with '#' will be skiped.
+
         cfgs = strings.SplitN(line, "=", 2)
-        key = strings.Replace(cfgs[0], " ", "", -1)
-        key = strings.Replace(key, "\t", "", -1)
+        key = TrimString(cfgs[0])
         value = cfgs[1]
         cfg[key] = value
     }
 	return cfg, err
 }
 
+// Get rid of spaces and tab.
 func TrimString(str string)string{
     out := strings.Replace(str, " ", "", -1)
     out = strings.Replace(out, "\t", "", -1)
