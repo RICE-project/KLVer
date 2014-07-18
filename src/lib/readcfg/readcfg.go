@@ -5,6 +5,7 @@ package readcfg
 
 import "io/ioutil"
 import "strings"
+import "regexp"
 
 /*
 ReacConfig is used to read text config file.
@@ -38,14 +39,21 @@ func ReadConfig(filename string) (map[string]string, error) {
         cfgs = strings.SplitN(line, "=", 2)
         key = TrimString(cfgs[0])
         value = cfgs[1]
-        cfg[key] = value
+        cfg[key] = TrimString(value)
     }
 	return cfg, err
 }
 
 // Get rid of spaces and tab.
 func TrimString(str string)string{
-    out := strings.Replace(str, " ", "", -1)
-    out = strings.Replace(out, "\t", "", -1)
+    const TRIM_HEAD_SPACE = "^[ ]+"
+    const TRIM_TAIL_SPACE = "[ ]+$"
+    regHead, _ := regexp.Compile(TRIM_HEAD_SPACE)
+    regTail, _ := regexp.Compile(TRIM_TAIL_SPACE)
+
+    out := strings.Replace(str, "\t", "", -1)  // Go to hell the tab space.
+    out = regHead.ReplaceAllLiteralString(out, "")
+    out = regTail.ReplaceAllLiteralString(out, "")
+
     return out
 }
