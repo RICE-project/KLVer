@@ -26,9 +26,13 @@ func (this *Config) Init() error {
 
 //For database use.
 func (this *Config) GetDSN() string {
-	dsnTemplate := "%s:%s@tcp(%s:%s)/%s?charset=utf8"
-	dsn := fmt.Sprintf(dsnTemplate, this.cfg["mysql_user"], this.cfg["mysql_password"], this.cfg["mysql_host"], this.cfg["mysql_port"], this.cfg["mysql_db"])
-	return TrimString(dsn)
+	const dsnTemplate = "%s:%s@tcp(%s:%s)/%s?charset=utf8"
+    mysqlUser, _ := this.GetConfig("mysql_user")
+    mysqlPass, _ := this.GetConfig("mysql_password")
+    mysqlHost, _ := this.GetConfig("mysql_host")
+    mysqlPort, _ := this.GetConfig("mysql_port")
+    mysqlDb, _ := this.GetConfig("mysql_db")
+	return fmt.Sprintf(dsnTemplate, mysqlUser, mysqlPass, mysqlHost, mysqlPort, mysqlDb)
 }
 
 //Get a config value.
