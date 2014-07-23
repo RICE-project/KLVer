@@ -1,6 +1,3 @@
-[submodule "src/lib/db/drivers"]
-	path = src/lib/db/drivers
-	url = git@github.com:RICE-project/go-mysql.git
 [submodule "src/lib/db/go-mysql"]
 	path = src/lib/db/go-mysql
 	url = git@github.com:RICE-project/go-mysql.git
