@@ -36,7 +36,6 @@ all: clean build
 
 build:
 	mkdir -p \$(GOPATH)/bin
-	go get github.com/tonychee7000/mysql
 	go build klver
 	mv klver \$(GOPATH)/bin
 	mkdir -p \$(GOPATH)/share/log
