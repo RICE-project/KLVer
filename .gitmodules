@@ -1,3 +1,6 @@
 [submodule "src/lib/db/go-mysql"]
 	path = src/lib/db/go-mysql
 	url = git@github.com:RICE-project/go-mysql.git
+[submodule "share/js/jquery"]
+	path = share/js/jquery
+	url = git@github.com:RICE-project/jQuery-official.git
