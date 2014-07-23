@@ -3,7 +3,7 @@
 -- global_defs
 create table if not exists global_defs(
         id int(4) not null default 0,
-        notifi_mail_from char(50) not null default 'glvsadmin@localhost', 
+        notifi_mail_from char(50) not null default 'klver@localhost', 
         smtp_server char(15) not null default '127.0.0.1', 
         router_id char(50) not null default 'LVS_DEVEL'
 );
@@ -97,4 +97,5 @@ create table if not exists user_management(
         password char(50) not null,
         is_enabled bool not null default true
 );
-insert into user_management(username,password) values('admin','2e85d051e63f99d2cc6fe91bdf03693f874fa2b5');
+
+insert into user_management(username,password) values('admin','2e85d051e63f99d2cc6fe91bdf03693f874fa2b5');  --admin/12345678
