@@ -2,7 +2,7 @@
 //
 //config file is
 //
-//    <glvsadm_dir>/share/etc/glvsadm.cfg
+//    <klver_dir>/share/etc/klver.cfg
 //
 package config
 
@@ -10,7 +10,7 @@ import (
 	"errors"
 	"fmt"
 	"lib/consts"
-	"lib/readcfg"
+	. "lib/readcfg"
 )
 
 type Config struct {
@@ -20,15 +20,19 @@ type Config struct {
 //Init Config module.
 func (this *Config) Init() error {
 	var err error
-	this.cfg, err = readcfg.ReadConfig(consts.DIR_CFG + "klver.cfg")
+	this.cfg, err = ReadConfig(consts.DIR_CFG + consts.CFG_FILE)
 	return err //No errors.
 }
 
 //For database use.
 func (this *Config) GetDSN() string {
-	dsnTemplate := "%s:%s@tcp(%s:%s)/%s?charset=utf8"
-	dsn := fmt.Sprintf(dsnTemplate, this.cfg["mysql_user"], this.cfg["mysql_password"], this.cfg["mysql_host"], this.cfg["mysql_port"], this.cfg["mysql_db"])
-	return dsn
+	const dsnTemplate = "%s:%s@tcp(%s:%s)/%s?charset=utf8"
+    mysqlUser, _ := this.GetConfig("mysql_user")
+    mysqlPass, _ := this.GetConfig("mysql_password")
+    mysqlHost, _ := this.GetConfig("mysql_host")
+    mysqlPort, _ := this.GetConfig("mysql_port")
+    mysqlDb, _ := this.GetConfig("mysql_db")
+	return fmt.Sprintf(dsnTemplate, mysqlUser, mysqlPass, mysqlHost, mysqlPort, mysqlDb)
 }
 
 //Get a config value.
@@ -38,5 +42,5 @@ func (this *Config) GetConfig(key string) (string, error) {
 	if !ok {
 		err = errors.New("No such key in config file.")
 	}
-	return config, err
+	return TrimString(config), err
 }

@@ -1,4 +1,6 @@
 /*
+- KLVer By: Tony Chyi <tonychee1989@gmail.com> -
+
 KLVer (pronounces 'clever') is a web-based keepalived configuration tool
 developed with go programming language. It allows a user create/delete
 LVS instance, add/remove MASTER/BACKUP server, add/remove virtual server
@@ -44,7 +46,7 @@ func main() {
 	}
 	log.LogInfo("Initializing...")
 
-	log.LogInfo(consts.NAME, consts.VERISION)
+	log.LogInfo(consts.NAME, consts.VERSION)
 	log.LogInfo("Reading config file...")
 	errCfg := cfg.Init()
 	if errCfg != nil {
@@ -81,7 +83,7 @@ func main() {
 		httpPort = "80"
 	}
 	log.LogInfo("HTTP Serve at :", httpPort)
-	errHttp := http.ListenAndServe(":"+httpPort, mux)
+	errHttp := http.ListenAndServe(":" + httpPort, mux)
 	if errHttp != nil {
 		log.LogCritical(errHttp)
 	}

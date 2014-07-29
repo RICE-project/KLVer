@@ -1,19 +1,39 @@
 <!DOCTYPE html>
 <html>
         <head>
-                <meta charset="utf8"/>
+                <meta charset="utf-8"/>
                 <title>{{.HTML_TITLE_MAIN}}</title>
                 <script type="text/javascript" src="js/jquery.js"></script>
                 <link rel="stylesheet" href="css/main.css"/>
         </head>
         <body>
-                <div class="banner">
+                <div class="header">
+                    <div class="banner">
+                        <img src="images/Logo.png" height="72">
+                        <span class="title">KLVer</span>
+                    </div>
+                    <div class="info">
+                        <span>{{.HTML_LOGIN_AS}}</span>
+                        <span id="lab_loginname"></span>
+                        <button id="btn_logout">{{.HTML_BTN_LOGOUT}}</button>
+                    </div>
                 </div>
-                <div class="sidebar_l">
-                </div>
-                <div class="content">
+                <div class="main">
+                    <div class="sidebar_l">
+                    </div>
+                    <div class="content">
+                    </div>
                 </div>
                 <div class="footer">
+                    <p>
+                        <span>
+                            <a href="https://github.com/tonychee7000/KLVer">{{.HTML_VERINFO}}</a>|{{.HTML_LAB_AUTHOR}}
+                        </span>
+                        <a href="mailto:{{.HTML_AUTHOR_MAIL}}">{{.HTML_AUTHOR}}</a>
+                    </p>
+                    <p>
+                        Powered by:<a href="https://github.com/tonychee7000/Goblin">Goblin</a>
+                    </p>
                 </div>
         </body>
 </html>

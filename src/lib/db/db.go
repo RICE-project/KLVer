@@ -6,7 +6,7 @@ package db
 import "database/sql"
 
 // Forked from https://github.com/go-sql-driver/mysql
-import _ "github.com/tonychee7000/mysql"
+import _ "lib/db/go-mysql"
 
 //Connect to MySQL server.
 func Connect(dsn string) (*sql.DB, error) {

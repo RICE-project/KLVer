@@ -1,4 +1,6 @@
 #!/bin/sh
+#coding: utf-8
+
 
 #check go
 
@@ -9,20 +11,50 @@ else
 	echo "not found."
 	exit 1
 fi
+ARG_PREFIX=$1
+
+if [ 'x' != "${ARG_PREFIX}x" ];then
+	PREFIX=$(echo $ARG_PREFIX|sed 's/--prefix=//'|sed 's/\//\\\//g')
+else
+	PREFIX=$(pwd|sed 's/\//\\\//g')
+fi
+
+
+PREFIXs=$(echo $PREFIX|sed 's/\\//g')
+
+echo -n "Prefix ... "
+echo $PREFIXs
+
+cat 'src/lib/consts/dir.go.in'|sed "s/@PREFIX@/$PREFIX\//" > src/lib/consts/dir.go
 
 export GOPATH=$(pwd)
-echo -e "
-all: build
+cat <<EOF >Makefile
+export GOPATH=${GOPATH}
+export USER=klver
+
+all: clean build
 
 build:
-\texport GOPATH=${GOPATH}
-\tmkdir -p ${GOPATH}/bin
-\tgo get github.com/tonychee7000/mysql
-\tgo build klver
-\tmv klver ${GOPATH}/bin
-\tmkdir -p ${GOPATH}/share/log
-        
+	mkdir -p \$(GOPATH)/bin
+	go build klver
+	mv klver \$(GOPATH)/bin
+	mkdir -p \$(GOPATH)/share/log
+		
 clean:
-\trm -rf ${GOPATH}/pkg
-\trm -rf ${GOPATH}/bin
-" > Makefile
+	- rm -rf \$(GOPATH)/pkg
+	- rm -rf \$(GOPATH)/bin
+
+install:
+	- useradd \$(USER) -s /bin/sh -d ${PREFIXs}
+	install -o \$(USER) -g \$(USER) -m 755 -d ${PREFIXs}
+	install -o \$(USER) -g \$(USER) -m 755 -d ${PREFIXs}/bin
+	install -o \$(USER) -g \$(USER) -m 755 \$(GOPATH)/bin/klver ${PREFIXs}/bin
+	@cp -fvr \$(GOPATH)/share ${PREFIXs}
+	chown -R \$(USER).\$(USER) ${PREFIXs}/share
+	chmod -R 755 ${PREFIXs}/share
+
+uninstall:
+	rm -rf ${PREFIXs}/bin
+	rm -rf ${PREFIXs}/share
+
+EOF

@@ -2,3 +2,5 @@ pkg/
 bin/
 share/log/*
 Makefile
+html_draft/
+*.un~

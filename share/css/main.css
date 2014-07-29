@@ -1,0 +1,104 @@
+@font-face {
+    font-family : "Arial Wide";
+    font-stretch : ultra-expanded;
+
+}
+
+html, body {
+    margin: 0 0;
+    background-color: #eee;
+    height:100%;
+    font-family: "文泉驿微米黑", "微软雅黑", Arial ,"黑体", "宋体";
+}
+
+button {
+    border-radius: 3px;
+    box-shadow: 0 0 3px;
+    color: white;
+    border: 1px solid #5ca941;
+    background-color: #60b044;
+    background: -webkit-linear-gradient(#8add6d, #60b044);
+    background: -moz-linear-gradient(#8add6d, #60b044);
+    background: -ms-linear-gradient(#8add6d, #60b044);
+    background: linear-gradient(#8add6d, #60b044);
+    font-family: "文泉驿微米黑", "微软雅黑", Arial ,"黑体", "宋体";
+    padding:3px 5px;
+}
+
+button:hover {
+    background-color:#569e3d;
+    background-image:-moz-linear-gradient(#79d858, #569e3d);
+    background-image:-webkit-linear-gradient(#79d858, #569e3d);
+    background-image:-ms-linear-gradient(#79d858, #569e3d);
+    background-image:linear-gradient(#79d858, #569e3d);
+    border-color:#4a993e
+}
+
+button:active {
+    background-color:#569e3d;
+    background-image:none;
+    border-color:#418737;
+}
+
+.header {
+    height: 72px;
+    padding: 5px 15px;
+    background: -webkit-linear-gradient(lightgray, #DDD);
+    background: -moz-linear-gradient(lightgray, #DDD);
+    background: -ms-linear-gradient(lightgray, #DDD);
+    background: linear-gradient(lightgray, #DDD);
+    border-bottom: 2px solid lightgray;
+    box-shadow: 0 0 3px;
+}
+.header .banner {
+    float: left;
+}
+
+.header .banner * {
+    vertical-align: middle;
+}
+
+.header .info {
+    float: right;
+    font-size: 14px;
+    margin-top: 42px;
+}
+
+
+.header .banner span.title{
+    font-family: "Arial Wide";
+    font-size:36px;
+}
+
+.main {
+    height: 100%;
+}
+
+.footer {
+    height: 64px;
+    padding: 5px 5px;
+    text-align: center;
+    border-top: 2px solid lightgray;
+    font-size: 12px;
+
+    background: -webkit-linear-gradient(#DDD, lightgray);
+    background: -moz-linear-gradient(#DDD, lightgray);
+    background: -ms-linear-gradient(#DDD, lightgray);
+    background: linear-gradient(#DDD, lightgray);
+}
+.content {
+    float: left;
+    height: 100%;
+}
+
+.sidebar_l {
+    float: left;
+    width: 256px;
+    border-right: 2px solid #888;
+    height: 100%;
+}
+
+.footer p {
+    margin: 0;
+}
+
