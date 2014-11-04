@@ -84,11 +84,11 @@ func main() {
 	//TODO: ajax
 
     //Try https.
-    httpsPort, errPorts := cfg.GetConfig("https_port")
-    if errPorts != nil {
-        log.LogInfo("No https_port found in config file, use :443")
-        httpsPort = "443"
-    }
+	httpPort, errPort := cfg.GetConfig("http_port")
+	if errPort != nil {
+		log.LogInfo("No http_port found in config file, use :80")
+		httpPort = "80"
+	}
 
     useHttps, errUseHttps := cfg.GetConfig("use_https")
     isServeHttps := false
@@ -97,6 +97,11 @@ func main() {
     }else if useHttps=="yes"{
         log.LogInfo("Try to use HTTPS")
         isServeHttps = true
+        httpsPort, errPorts := cfg.GetConfig("https_port")
+        if errPorts != nil {
+            log.LogInfo("No https_port found in config file, use :443")
+            httpsPort = "443"
+        }
 
         certFile, errCert := cfg.GetConfig("certfile")
         if errCert != nil{
@@ -113,36 +118,27 @@ func main() {
         if isServeHttps{
             log.LogInfo("HTTPS Server at :", httpsPort)
             go servHttps(chHttps, log, httpsPort, certFile, certKeyFile, mux)
+            httpForward := http.NewServeMux()
+            httpForward.HandleFunc("/", forwardToHttps(httpsPort))
+            go servHttp(chHttp, log, httpPort, httpForward)
+            <-chHttps
+            <-chHttp
         }
 
     }else{
         log.LogInfo("HTTPS disabled")
-    }
-
-
-	httpPort, errPort := cfg.GetConfig("http_port")
-	if errPort != nil {
-		log.LogInfo("No http_port found in config file, use :80")
-		httpPort = "80"
-	}
-
-	log.LogInfo("HTTP Serve at :", httpPort)
-    if !isServeHttps{
+	    log.LogInfo("HTTP Serve at :", httpPort)
         go servHttp(chHttp, log, httpPort, mux)
-    }else{
-        httpForward := http.NewServeMux()
-        httpForward.HandleFunc("/", forwardToHttps(httpsPort))
+        <-chHttp
     }
 
-    <-chHttps
-    <-chHttp
     log.LogInfo("Exit")
 }
 
 func servHttp(ch chan int, log *logger.Logger, httpPort string, mux *http.ServeMux){
     errHttp := http.ListenAndServe(":" + httpPort, mux)
     if errHttp != nil{
-        log.LogError(errHttp)
+        log.LogWarning(errHttp)
     }
     ch<-1
     return
@@ -151,7 +147,7 @@ func servHttp(ch chan int, log *logger.Logger, httpPort string, mux *http.ServeM
 func servHttps(ch chan int, log *logger.Logger, httpsPort string, cert string, certkey string, mux *http.ServeMux){
     errHttps := http.ListenAndServeTLS(":" + httpsPort, cert, certkey, mux)
     if errHttps != nil{
-        log.LogError(errHttps)
+        log.LogWarning(errHttps)
     }
     ch<-1
     return
