@@ -109,7 +109,7 @@ func (p *Page) GetStaticHandler(staticDir string) http.HandlerFunc {
 			}
 		}()
 
-		p.setMimeType(&writer, url)
+		p.setMimeType(writer, url)
 		p.log.LogInfo("HTTP GET:", url, "\t| staticDir:", staticDir, "\tfileName:", file)
 		http.ServeFile(writer, request, file)
 	}
@@ -136,11 +136,11 @@ func (p *Page) ForwardToHTTPS(httpPort string, httpsPort string, log *logger.Log
 	}
 }
 
-func (p *Page) setMimeType(writer *http.ResponseWriter, url string) {
+func (p *Page) setMimeType(writer http.ResponseWriter, url string) {
 	ext := path.Ext(url)
 	mimeType, found := p.mimeType[ext[1:]] // skip the dot '.'
 	if found {
-		(*writer).Header().Set("Content-Type", fmt.Sprintf("%s; charset=utf-8", readcfg.TrimString(mimeType)))
+		writer.Header().Set("Content-Type", fmt.Sprintf("%s; charset=utf-8", readcfg.TrimString(mimeType)))
 	}
 }
 
