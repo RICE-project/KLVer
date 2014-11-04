@@ -80,6 +80,8 @@ func main() {
 	mux.HandleFunc("/js/", pag.GetStaticHandler(consts.DIR_JS))
 	mux.HandleFunc("/css/", pag.GetStaticHandler(consts.DIR_CSS))
 	mux.HandleFunc("/images/", pag.GetStaticHandler(consts.DIR_IMAGES))
+	mux.HandleFunc("/robots.txt", pag.GetStaticHandler(consts.DIR_MISC))
+    mux.HandleFunc("/favicon.ico", pag.GetStaticHandler(consts.DIR_MISC))
 
 	mux.HandleFunc("/", pag.GetHandler())
 	//TODO: ajax

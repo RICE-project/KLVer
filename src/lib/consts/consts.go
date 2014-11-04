@@ -12,6 +12,7 @@ const (
     DIR_JS                    = dIR_PREFIX + "js/"
     DIR_CSS                   = dIR_PREFIX + "css/"
     DIR_IMAGES                = dIR_PREFIX + "images/"
+    DIR_MISC                  = dIR_PREFIX + "misc/"
     DIR_MAKE                  = dIR_PREFIX + "make/"
     DIR_LANG                  = dIR_PREFIX + "lang/"
     DIR_LOG                   = dIR_PREFIX + "log/" //logger in src/lib
