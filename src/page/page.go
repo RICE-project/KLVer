@@ -101,6 +101,14 @@ func (this *Page) GetStaticHandler(staticDir string) http.HandlerFunc {
 		url := request.URL.Path
 		urla := strings.Split(url, "/")
 		file := staticDir + urla[len(urla)-1] // real file path.
+		defer func() {
+			x := recover()
+			if x != nil {
+				file = staticDir
+				this.err404Handler(writer, request)
+			}
+		}()
+
 		this.setMimeType(&writer, url)
 		this.log.LogInfo("HTTP GET:", url, "\t| staticDir:", staticDir, "\tfileName:", file)
 		http.ServeFile(writer, request, file)
