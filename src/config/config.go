@@ -27,11 +27,11 @@ func (c *Config) Init() error {
 //For database use.
 func (c *Config) GetDSN() string {
 	const dsnTemplate = "%s:%s@tcp(%s:%s)/%s?charset=utf8"
-    mysqlUser, _ := c.GetConfig("mysql_user")
-    mysqlPass, _ := c.GetConfig("mysql_password")
-    mysqlHost, _ := c.GetConfig("mysql_host")
-    mysqlPort, _ := c.GetConfig("mysql_port")
-    mysqlDb, _ := c.GetConfig("mysql_db")
+	mysqlUser, _ := c.GetConfig("mysql_user")
+	mysqlPass, _ := c.GetConfig("mysql_password")
+	mysqlHost, _ := c.GetConfig("mysql_host")
+	mysqlPort, _ := c.GetConfig("mysql_port")
+	mysqlDb, _ := c.GetConfig("mysql_db")
 	return fmt.Sprintf(dsnTemplate, mysqlUser, mysqlPass, mysqlHost, mysqlPort, mysqlDb)
 }
 

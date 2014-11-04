@@ -48,21 +48,22 @@ func (s *SessionManager) DestorySession(sid string) {
 }
 
 //Sessions which are time-expired should be deleted.
-func (s *SessionManager) gc() {
+func (s *SessionManager) gc(ch chan int) {
 	s.log.LogInfo("Session gc Start!")
 	gcList := make([]string, 0)
-	s.lock.Lock()
-	defer s.lock.Unlock()
-	if len(s.sessionList) != 0 {
-		for key, value := range s.sessionList {
-			if value.isExpired() {
-				gcList = append(gcList, key)
+	for {
+		if len(s.sessionList) != 0 {
+			for key, value := range s.sessionList {
+				if value.isExpired() {
+					gcList = append(gcList, key)
+				}
+			}
+			for _, gcSid := range gcList {
+				s.DestorySession(gcSid)
+				s.log.LogInfo("Session ID=", gcSid, " is expired.")
 			}
 		}
-		for _, gcSid := range gcList {
-			s.DestorySession(gcSid)
-            s.log.LogInfo("Session ID=", gcSid," is expired.")
-		}
+		time.Sleep(consts.CFG_GC_INTERVAL * time.Second)
 	}
-	time.AfterFunc(consts.CFG_GC_INTERVAL*time.Minute, func() { s.gc() })
+	ch <- 1
 }

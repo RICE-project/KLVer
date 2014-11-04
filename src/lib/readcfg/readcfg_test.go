@@ -11,5 +11,5 @@ func TestReadConfig(t *testing.T) {
 	if test["lang"] != "zh_CN" {
 		t.Errorf("Err: ReadConfig() failed. expected 'zh_CN', got %s", test["lang"])
 	}
-    t.Log(test)
+	t.Log(test)
 }
