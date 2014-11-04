@@ -84,20 +84,23 @@ func main() {
 	mux.HandleFunc("/", pag.GetHandler())
 	//TODO: ajax
 
-	//Try https.
 	httpPort, errPort := cfg.GetConfig("http_port")
 	if errPort != nil {
 		log.LogInfo("No http_port found in config file, use :80")
 		httpPort = "80"
 	}
 
+	//Try https.
+	log.LogInfo("Try to use HTTPS")
 	useHttps, errUseHttps := cfg.GetConfig("use_https")
-	isServeHttps := false
 	if errUseHttps != nil {
 		log.LogInfo("No use_https found in config file, disable HTTPS")
-	} else if useHttps == "yes" {
-		log.LogInfo("Try to use HTTPS")
-		isServeHttps = true
+	}
+	isServeHttps := (useHttps == "yes")
+
+	//Load some staff.
+	if isServeHttps {
+
 		httpsPort, errPorts := cfg.GetConfig("https_port")
 		if errPorts != nil {
 			log.LogInfo("No https_port found in config file, use :443")
@@ -106,34 +109,32 @@ func main() {
 
 		certFile, errCert := cfg.GetConfig("certfile")
 		if errCert != nil {
-			log.LogWarning("Error when loading SSL Certificate!")
+			log.LogWarning("No SSL certificate set, disable HTTPS")
 			isServeHttps = false
 		}
 
 		certKeyFile, errKey := cfg.GetConfig("certkeyfile")
 		if errKey != nil {
-			log.LogWarning("Error when loading SSL Certificate Key!")
+			log.LogWarning("No SSL certificate key set, disable HTTPS")
 			isServeHttps = false
 		}
 
-		if isServeHttps {
-			log.LogInfo("HTTPS Server at :", httpsPort)
-			go servHttps(chHttps, log, httpsPort, certFile, certKeyFile, mux)
-			httpForward := http.NewServeMux()
-			httpForward.HandleFunc("/", pag.ForwardToHTTPS(httpPort, httpsPort, log))
-			go servHttp(chHttp, log, httpPort, httpForward)
-			<-chHttps
-			<-chHttp
-		} else {
-			log.LogWarning("Start server failed.")
-			os.Exit(1)
-		}
+	}
 
+	if isServeHttps {
+		log.LogInfo("HTTPS Server at :", httpsPort)
+		go servHttps(chHttps, log, httpsPort, certFile, certKeyFile, mux)
+		httpForward := http.NewServeMux()
+		httpForward.HandleFunc("/", pag.ForwardToHTTPS(httpPort, httpsPort, log))
+		go servHttp(chHttp, log, httpPort, httpForward)
+		<-chHttps
+		<-chHttp
 	} else {
 		log.LogInfo("HTTPS disabled")
 		log.LogInfo("HTTP Serve at :", httpPort)
 		go servHttp(chHttp, log, httpPort, mux)
 		<-chHttp
+
 	}
 
 	log.LogInfo("Exit")
