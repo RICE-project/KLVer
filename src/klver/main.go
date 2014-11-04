@@ -33,6 +33,7 @@ import (
 	"lib/consts"
 	"lib/logger"
 	"net/http"
+    "os"
 )
 
 var (
@@ -119,10 +120,13 @@ func main() {
             log.LogInfo("HTTPS Server at :", httpsPort)
             go servHttps(chHttps, log, httpsPort, certFile, certKeyFile, mux)
             httpForward := http.NewServeMux()
-            httpForward.HandleFunc("/", forwardToHttps(httpsPort))
+            httpForward.HandleFunc("/", forwardToHttps(httpsPort, log))
             go servHttp(chHttp, log, httpPort, httpForward)
             <-chHttps
             <-chHttp
+        }else{
+            log.LogWarning("Start server failed.")
+            os.Exit(1)
         }
 
     }else{
@@ -153,9 +157,10 @@ func servHttps(ch chan int, log *logger.Logger, httpsPort string, cert string, c
     return
 }
 
-func forwardToHttps(httpsPort string)http.HandlerFunc{
+func forwardToHttps(httpsPort string, log *logger.Logger)http.HandlerFunc{
     return func(writer http.ResponseWriter, request *http.Request){
         location := "https://" + request.Host + ":" + httpsPort + "/"
+        log.LogInfo(location)
         writer.Header().Set("Location", location)
     }
 }
