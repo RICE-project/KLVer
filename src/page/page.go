@@ -125,7 +125,7 @@ func (this *Page) ForwardToHTTPS(httpPort string, httpsPort string, log *logger.
 		location := "https://" + strings.Replace(request.Host, ":"+httpPort, "", -1) + ":" + httpsPort + request.URL.Path
 		log.LogInfo(location)
 		writer.Header().Add("Location", location)
-        writer.WriteHeader(http.StatusMovedPermanently)
+		writer.WriteHeader(http.StatusMovedPermanently)
 	}
 }
 
