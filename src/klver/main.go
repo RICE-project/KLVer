@@ -33,13 +33,12 @@ import (
 	"lib/consts"
 	"lib/logger"
 	"net/http"
-    "os"
-    "strings"
+	"os"
 )
 
 var (
-    chHttps chan int
-    chHttp chan int
+	chHttps chan int
+	chHttp  chan int
 )
 
 func main() {
@@ -85,83 +84,75 @@ func main() {
 	mux.HandleFunc("/", pag.GetHandler())
 	//TODO: ajax
 
-    //Try https.
+	//Try https.
 	httpPort, errPort := cfg.GetConfig("http_port")
 	if errPort != nil {
 		log.LogInfo("No http_port found in config file, use :80")
 		httpPort = "80"
 	}
 
-    useHttps, errUseHttps := cfg.GetConfig("use_https")
-    isServeHttps := false
-    if errUseHttps != nil {
-        log.LogInfo("No use_https found in config file, disable HTTPS")
-    }else if useHttps=="yes"{
-        log.LogInfo("Try to use HTTPS")
-        isServeHttps = true
-        httpsPort, errPorts := cfg.GetConfig("https_port")
-        if errPorts != nil {
-            log.LogInfo("No https_port found in config file, use :443")
-            httpsPort = "443"
-        }
+	useHttps, errUseHttps := cfg.GetConfig("use_https")
+	isServeHttps := false
+	if errUseHttps != nil {
+		log.LogInfo("No use_https found in config file, disable HTTPS")
+	} else if useHttps == "yes" {
+		log.LogInfo("Try to use HTTPS")
+		isServeHttps = true
+		httpsPort, errPorts := cfg.GetConfig("https_port")
+		if errPorts != nil {
+			log.LogInfo("No https_port found in config file, use :443")
+			httpsPort = "443"
+		}
 
-        certFile, errCert := cfg.GetConfig("certfile")
-        if errCert != nil{
-            log.LogInfo("Error when loading SSL Certificate. disable HTTPS")
-            isServeHttps = false
-        }
+		certFile, errCert := cfg.GetConfig("certfile")
+		if errCert != nil {
+			log.LogInfo("Error when loading SSL Certificate. disable HTTPS")
+			isServeHttps = false
+		}
 
-        certKeyFile, errKey := cfg.GetConfig("certkeyfile")
-        if errKey != nil{
-            log.LogInfo("Error when loading SSL Certificate Key. disable HTTPS")
-            isServeHttps = false
-        }
+		certKeyFile, errKey := cfg.GetConfig("certkeyfile")
+		if errKey != nil {
+			log.LogInfo("Error when loading SSL Certificate Key. disable HTTPS")
+			isServeHttps = false
+		}
 
-        if isServeHttps{
-            log.LogInfo("HTTPS Server at :", httpsPort)
-            go servHttps(chHttps, log, httpsPort, certFile, certKeyFile, mux)
-            httpForward := http.NewServeMux()
-            httpForward.HandleFunc("/", forwardToHttps(httpPort, httpsPort, log))
-            go servHttp(chHttp, log, httpPort, httpForward)
-            <-chHttps
-            <-chHttp
-        }else{
-            log.LogWarning("Start server failed.")
-            os.Exit(1)
-        }
+		if isServeHttps {
+			log.LogInfo("HTTPS Server at :", httpsPort)
+			go servHttps(chHttps, log, httpsPort, certFile, certKeyFile, mux)
+			httpForward := http.NewServeMux()
+			httpForward.HandleFunc("/", pag.ForwardToHTTPS(httpPort, httpsPort, log))
+			go servHttp(chHttp, log, httpPort, httpForward)
+			<-chHttps
+			<-chHttp
+		} else {
+			log.LogWarning("Start server failed.")
+			os.Exit(1)
+		}
 
-    }else{
-        log.LogInfo("HTTPS disabled")
-	    log.LogInfo("HTTP Serve at :", httpPort)
-        go servHttp(chHttp, log, httpPort, mux)
-        <-chHttp
-    }
+	} else {
+		log.LogInfo("HTTPS disabled")
+		log.LogInfo("HTTP Serve at :", httpPort)
+		go servHttp(chHttp, log, httpPort, mux)
+		<-chHttp
+	}
 
-    log.LogInfo("Exit")
+	log.LogInfo("Exit")
 }
 
-func servHttp(ch chan int, log *logger.Logger, httpPort string, mux *http.ServeMux){
-    errHttp := http.ListenAndServe(":" + httpPort, mux)
-    if errHttp != nil{
-        log.LogWarning(errHttp)
-    }
-    ch<-1
-    return
+func servHttp(ch chan int, log *logger.Logger, httpPort string, mux *http.ServeMux) {
+	errHttp := http.ListenAndServe(":"+httpPort, mux)
+	if errHttp != nil {
+		log.LogWarning(errHttp)
+	}
+	ch <- 1
+	return
 }
 
-func servHttps(ch chan int, log *logger.Logger, httpsPort string, cert string, certkey string, mux *http.ServeMux){
-    errHttps := http.ListenAndServeTLS(":" + httpsPort, cert, certkey, mux)
-    if errHttps != nil{
-        log.LogWarning(errHttps)
-    }
-    ch<-1
-    return
-}
-
-func forwardToHttps(httpPort string, httpsPort string, log *logger.Logger)http.HandlerFunc{
-    return func(writer http.ResponseWriter, request *http.Request){
-        location := "https://" + strings.Replace(request.Host, ":" + httpPort, "", -1) + ":" + httpsPort + "/"
-        log.LogInfo(location)
-        writer.Header().Set("Location", location)
-    }
+func servHttps(ch chan int, log *logger.Logger, httpsPort string, cert string, certkey string, mux *http.ServeMux) {
+	errHttps := http.ListenAndServeTLS(":"+httpsPort, cert, certkey, mux)
+	if errHttps != nil {
+		log.LogWarning(errHttps)
+	}
+	ch <- 1
+	return
 }
