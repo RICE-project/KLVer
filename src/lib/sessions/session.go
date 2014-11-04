@@ -37,35 +37,35 @@ func expireTime() int64 {
 	return timeNow + consts.CFG_SESSION_TIMEOUT
 }
 
-func (this *Session) newSession(value map[string]interface{}) {
-	this.sid = generateSid()
-	this.expire = expireTime()
-	this.SetValue(value)
+func (s *Session) newSession(value map[string]interface{}) {
+	s.sid = generateSid()
+	s.expire = expireTime()
+	s.SetValue(value)
 }
 
 //Get Session values.
-func (this *Session) GetValue() map[string]interface{} {
-	return this.values
+func (s *Session) GetValue() map[string]interface{} {
+	return s.values
 }
 
 //Get Session ID.
-func (this *Session) GetSid() string {
-	return this.sid
+func (s *Session) GetSid() string {
+	return s.sid
 }
 
-func (this *Session) isExpired() bool {
-	return this.expire < time.Now().Unix()
+func (s *Session) isExpired() bool {
+	return s.expire < time.Now().Unix()
 }
 
-func (this *Session) getExpireTime() int64 {
-	return this.expire
+func (s *Session) getExpireTime() int64 {
+	return s.expire
 }
 
-func (this *Session) updateExpireTime() {
-	this.expire = expireTime()
+func (s *Session) updateExpireTime() {
+	s.expire = expireTime()
 }
 
 //Set Session values.
-func (this *Session) SetValue(value map[string]interface{}) {
-	this.values = value
+func (s *Session) SetValue(value map[string]interface{}) {
+	s.values = value
 }

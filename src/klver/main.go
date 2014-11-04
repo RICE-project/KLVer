@@ -35,6 +35,11 @@ import (
 	"net/http"
 )
 
+var (
+	chHttps chan int
+	chHttp  chan int
+)
+
 func main() {
 	cfg := new(config.Config)
 	log := new(logger.Logger)
@@ -74,17 +79,79 @@ func main() {
 	mux.HandleFunc("/js/", pag.GetStaticHandler(consts.DIR_JS))
 	mux.HandleFunc("/css/", pag.GetStaticHandler(consts.DIR_CSS))
 	mux.HandleFunc("/images/", pag.GetStaticHandler(consts.DIR_IMAGES))
+	mux.HandleFunc("/robots.txt", pag.GetStaticHandler(consts.DIR_MISC))
+	mux.HandleFunc("/favicon.ico", pag.GetStaticHandler(consts.DIR_MISC))
 
 	mux.HandleFunc("/", pag.GetHandler())
 	//TODO: ajax
+
 	httpPort, errPort := cfg.GetConfig("http_port")
 	if errPort != nil {
 		log.LogInfo("No http_port found in config file, use :80")
 		httpPort = "80"
 	}
-	log.LogInfo("HTTP Serve at :", httpPort)
-	errHttp := http.ListenAndServe(":" + httpPort, mux)
-	if errHttp != nil {
-		log.LogCritical(errHttp)
+
+	//Try https.
+	log.LogInfo("Try to use HTTPS")
+	useHttps, errUseHttps := cfg.GetConfig("use_https")
+	if errUseHttps != nil {
+		log.LogInfo("No use_https found in config file, disable HTTPS")
 	}
+	isServeHttps := (useHttps == "yes")
+
+	//Load some staff.
+
+	httpsPort, errPorts := cfg.GetConfig("https_port")
+	if errPorts != nil {
+		log.LogInfo("No https_port found in config file, use :443")
+		httpsPort = "443"
+	}
+
+	certFile, errCert := cfg.GetConfig("certfile")
+	if errCert != nil {
+		log.LogWarning("No SSL certificate set, disable HTTPS")
+		isServeHttps = false
+	}
+
+	certKeyFile, errKey := cfg.GetConfig("certkeyfile")
+	if errKey != nil {
+		log.LogWarning("No SSL certificate key set, disable HTTPS")
+		isServeHttps = false
+	}
+
+	if isServeHttps {
+		log.LogInfo("HTTPS Server at :", httpsPort)
+		go servHttps(chHttps, log, httpsPort, certFile, certKeyFile, mux)
+		httpForward := http.NewServeMux()
+		httpForward.HandleFunc("/", pag.ForwardToHTTPS(httpPort, httpsPort, log))
+		go servHttp(chHttp, log, httpPort, httpForward)
+		<-chHttps
+		<-chHttp
+	} else {
+		log.LogInfo("HTTPS disabled")
+		log.LogInfo("HTTP Serve at :", httpPort)
+		go servHttp(chHttp, log, httpPort, mux)
+		<-chHttp
+
+	}
+
+	log.LogInfo("Exit")
+}
+
+func servHttp(ch chan int, log *logger.Logger, httpPort string, mux *http.ServeMux) {
+	errHttp := http.ListenAndServe(":"+httpPort, mux)
+	if errHttp != nil {
+		log.LogWarning(errHttp)
+	}
+	ch <- 1
+	return
+}
+
+func servHttps(ch chan int, log *logger.Logger, httpsPort string, cert string, certkey string, mux *http.ServeMux) {
+	errHttps := http.ListenAndServeTLS(":"+httpsPort, cert, certkey, mux)
+	if errHttps != nil {
+		log.LogWarning(errHttps)
+	}
+	ch <- 1
+	return
 }

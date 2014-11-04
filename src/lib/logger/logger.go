@@ -18,50 +18,50 @@ type Logger struct {
 }
 
 //Init Logger
-func (this *Logger) SetNewLogger() error {
+func (l *Logger) SetNewLogger() error {
 	var err error = nil
 	fileNameTemplate := "%s-%s.log"
 	fileName := fmt.Sprintf(fileNameTemplate, consts.NAME, time.Now().Format("20060102150405"))
-	this.logf, err = os.OpenFile(consts.DIR_LOG+fileName, os.O_RDWR|os.O_CREATE, 0666)
+	l.logf, err = os.OpenFile(consts.DIR_LOG+fileName, os.O_RDWR|os.O_CREATE, 0666)
 	if err != nil {
 		return err
 	}
-	this.logs = log.New(this.logf, "\n", log.Ldate|log.Ltime|log.Lshortfile)
-	this.logs.SetPrefix(consts.NAME + "\t")
+	l.logs = log.New(l.logf, "\n", log.Ldate|log.Ltime)
+	l.logs.SetPrefix(consts.NAME + "\t")
 	return err
 }
 
 //Stop Logger
-func (this *Logger) CloseLogger() {
-	this.logf.Close()
+func (l *Logger) CloseLogger() {
+	l.logf.Close()
 }
 
 //For testing use.
-func (this *Logger) logTest(argv ...interface{}) {
-	this.logs.Print("TEST: ", argv)
+func (l *Logger) logTest(argv ...interface{}) {
+	l.logs.Print("TEST: ", argv)
 }
 
 //For general use.
-func (this *Logger) LogInfo(argv ...interface{}) {
-	this.logs.Print("INFO: ", argv)
+func (l *Logger) LogInfo(argv ...interface{}) {
+	l.logs.Print("INFO: ", argv)
 }
 
 //For warning(s) use.
-func (this *Logger) LogWarning(argv ...interface{}) {
-	this.logs.Print("WARN: ", argv)
+func (l *Logger) LogWarning(argv ...interface{}) {
+	l.logs.Print("WARN: ", argv)
 }
 
 //For error(s) occured.
-func (this *Logger) LogError(argv ...interface{}) {
-	this.logs.Panic("ERROR: ", argv)
+func (l *Logger) LogError(argv ...interface{}) {
+	l.logs.Panic("ERROR: ", argv)
 }
 
 //For fatal error(s).
-func (this *Logger) LogCritical(argv ...interface{}) {
-	this.logs.Fatal("CRITICAL: ", argv)
+func (l *Logger) LogCritical(argv ...interface{}) {
+	l.logs.Fatal("CRITICAL: ", argv)
 }
 
 //Reimplement of log.SetPrefix()
-func (this *Logger) SetPrefix(prefix string) {
-	this.logs.SetPrefix(prefix + "\t")
+func (l *Logger) SetPrefix(prefix string) {
+	l.logs.SetPrefix(prefix + "\t")
 }

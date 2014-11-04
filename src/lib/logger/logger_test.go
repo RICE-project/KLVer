@@ -12,5 +12,5 @@ func TestLogger(t *testing.T) {
 	defer a.CloseLogger()
 	a.SetPrefix("TEST")
 	a.logTest("The quick brown fox jumps over the lazy dog.")
-	a.logTest("gLVSAdm.lib.logger.Logger test.", a)
+	a.logTest("RICE.lib.logger.Logger test.", a)
 }
