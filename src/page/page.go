@@ -102,8 +102,8 @@ func (p *Page) GetStaticHandler(staticDir string) http.HandlerFunc {
 		urla := strings.Split(url, "/")
 		file := staticDir + urla[len(urla)-1] // real file path.
 		defer func() {
-			x := recover()
-			if x != nil {
+			a := recover()
+			if a != nil {
 				file = staticDir
 				p.err404Handler(writer, request)
 			}
