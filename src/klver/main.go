@@ -33,7 +33,6 @@ import (
 	"lib/consts"
 	"lib/logger"
 	"net/http"
-	"os"
 )
 
 var (
@@ -81,7 +80,7 @@ func main() {
 	mux.HandleFunc("/css/", pag.GetStaticHandler(consts.DIR_CSS))
 	mux.HandleFunc("/images/", pag.GetStaticHandler(consts.DIR_IMAGES))
 	mux.HandleFunc("/robots.txt", pag.GetStaticHandler(consts.DIR_MISC))
-    mux.HandleFunc("/favicon.ico", pag.GetStaticHandler(consts.DIR_MISC))
+	mux.HandleFunc("/favicon.ico", pag.GetStaticHandler(consts.DIR_MISC))
 
 	mux.HandleFunc("/", pag.GetHandler())
 	//TODO: ajax
@@ -101,26 +100,23 @@ func main() {
 	isServeHttps := (useHttps == "yes")
 
 	//Load some staff.
-	if isServeHttps {
 
-		httpsPort, errPorts := cfg.GetConfig("https_port")
-		if errPorts != nil {
-			log.LogInfo("No https_port found in config file, use :443")
-			httpsPort = "443"
-		}
+	httpsPort, errPorts := cfg.GetConfig("https_port")
+	if errPorts != nil {
+		log.LogInfo("No https_port found in config file, use :443")
+		httpsPort = "443"
+	}
 
-		certFile, errCert := cfg.GetConfig("certfile")
-		if errCert != nil {
-			log.LogWarning("No SSL certificate set, disable HTTPS")
-			isServeHttps = false
-		}
+	certFile, errCert := cfg.GetConfig("certfile")
+	if errCert != nil {
+		log.LogWarning("No SSL certificate set, disable HTTPS")
+		isServeHttps = false
+	}
 
-		certKeyFile, errKey := cfg.GetConfig("certkeyfile")
-		if errKey != nil {
-			log.LogWarning("No SSL certificate key set, disable HTTPS")
-			isServeHttps = false
-		}
-
+	certKeyFile, errKey := cfg.GetConfig("certkeyfile")
+	if errKey != nil {
+		log.LogWarning("No SSL certificate key set, disable HTTPS")
+		isServeHttps = false
 	}
 
 	if isServeHttps {
