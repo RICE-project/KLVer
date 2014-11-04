@@ -26,34 +26,34 @@ type Page struct {
 }
 
 //Load language and HTML templates.
-func (this *Page) Init(language *map[string]string, sessionManager *sessions.SessionManager, logs *logger.Logger) error {
+func (p *Page) Init(language *map[string]string, sessionManager *sessions.SessionManager, logs *logger.Logger) error {
 	var errMime error
 
-	this.log = logs
-	this.SetLang(language)
-	this.mimeType, errMime = getMimetype()
+	p.log = logs
+	p.SetLang(language)
+	p.mimeType, errMime = getMimetype()
 	if errMime != nil {
-		this.log.LogCritical(errMime)
+		p.log.LogCritical(errMime)
 		return errMime
 	}
 
-	this.sessionM = sessionManager
-	this.templates = make(map[string]*template.Template)
-	this.templatesErr = make(map[string]*template.Template)
-	errCPage := this.cachePage(consts.DIR_HTML)
+	p.sessionM = sessionManager
+	p.templates = make(map[string]*template.Template)
+	p.templatesErr = make(map[string]*template.Template)
+	errCPage := p.cachePage(consts.DIR_HTML)
 	if errCPage != nil {
-		this.log.LogCritical(errCPage)
+		p.log.LogCritical(errCPage)
 		return errCPage
 	}
-	errEPage := this.cachePage(consts.DIR_HTML_ERROR)
+	errEPage := p.cachePage(consts.DIR_HTML_ERROR)
 	if errEPage != nil {
-		this.log.LogCritical(errEPage)
+		p.log.LogCritical(errEPage)
 		return errEPage
 	}
 	return nil
 }
 
-func (this *Page) cachePage(dir string) error {
+func (p *Page) cachePage(dir string) error {
 	fileInfoArr, errReadDir := ioutil.ReadDir(dir)
 	if errReadDir != nil {
 		return errReadDir
@@ -63,40 +63,40 @@ func (this *Page) cachePage(dir string) error {
 	for _, fileInfo := range fileInfoArr {
 		templateName = fileInfo.Name()
 		if ext := path.Ext(templateName); ext != ".html" {
-			this.log.LogInfo("Skip non-template file: ", templateName)
+			p.log.LogInfo("Skip non-template file: ", templateName)
 			continue
 		}
 
 		templatePath = dir + templateName
 		t := template.Must(template.ParseFiles(templatePath))
 		templateNameShort := strings.TrimSuffix(templateName, ".html") //No extision name.
-		this.templates[templateNameShort] = t
-		this.log.LogInfo("Load HTML template '", templateName, "' done.")
+		p.templates[templateNameShort] = t
+		p.log.LogInfo("Load HTML template '", templateName, "' done.")
 	}
 	return nil
 }
 
 //Return http handler.
-func (this *Page) GetHandler() http.HandlerFunc {
+func (p *Page) GetHandler() http.HandlerFunc {
 	return func(writer http.ResponseWriter, request *http.Request) {
 		name := strings.TrimLeft(request.URL.Path, "/")
-		template, found := this.templates[name]
+		template, found := p.templates[name]
 		// Check if the page exists.
 		if found {
-			err := template.Execute(writer, this.lang)
+			err := template.Execute(writer, p.lang)
 			checkErr(err)
 		} else if name == "" { // Default page.
-			template = this.templates[consts.HTTP_DEFAULT]
-			err := template.Execute(writer, this.lang)
+			template = p.templates[consts.HTTP_DEFAULT]
+			err := template.Execute(writer, p.lang)
 			checkErr(err)
 		} else {
-			this.err404Handler(writer, request)
+			p.err404Handler(writer, request)
 		}
 	}
 }
 
 //Return static contents.
-func (this *Page) GetStaticHandler(staticDir string) http.HandlerFunc {
+func (p *Page) GetStaticHandler(staticDir string) http.HandlerFunc {
 	return func(writer http.ResponseWriter, request *http.Request) {
 		url := request.URL.Path
 		urla := strings.Split(url, "/")
@@ -105,30 +105,30 @@ func (this *Page) GetStaticHandler(staticDir string) http.HandlerFunc {
 			x := recover()
 			if x != nil {
 				file = staticDir
-				this.err404Handler(writer, request)
+				p.err404Handler(writer, request)
 			}
 		}()
 
-		this.setMimeType(&writer, url)
-		this.log.LogInfo("HTTP GET:", url, "\t| staticDir:", staticDir, "\tfileName:", file)
+		p.setMimeType(&writer, url)
+		p.log.LogInfo("HTTP GET:", url, "\t| staticDir:", staticDir, "\tfileName:", file)
 		http.ServeFile(writer, request, file)
 	}
 }
 
-func (this *Page) err404Handler(writer http.ResponseWriter, request *http.Request) {
-	this.log.LogWarning("404 Not Found when access:", request.URL.Path)
+func (p *Page) err404Handler(writer http.ResponseWriter, request *http.Request) {
+	p.log.LogWarning("404 Not Found when access:", request.URL.Path)
 	writer.Header().Set("Content-Type", "text/html; charset=utf-8")
 	writer.WriteHeader(http.StatusNotFound)
-	template := this.templates["404"]
-	err := template.Execute(writer, this.lang)
+	template := p.templates["404"]
+	err := template.Execute(writer, p.lang)
 	checkErr(err)
 }
 
-func (this *Page) SetLang(language *map[string]string) {
-	this.lang = language
+func (p *Page) SetLang(language *map[string]string) {
+	p.lang = language
 }
 
-func (this *Page) ForwardToHTTPS(httpPort string, httpsPort string, log *logger.Logger) http.HandlerFunc {
+func (p *Page) ForwardToHTTPS(httpPort string, httpsPort string, log *logger.Logger) http.HandlerFunc {
 	return func(writer http.ResponseWriter, request *http.Request) {
 		location := "https://" + strings.Replace(request.Host, ":"+httpPort, "", -1) + ":" + httpsPort + request.URL.Path
 		log.LogInfo(location)
@@ -137,9 +137,9 @@ func (this *Page) ForwardToHTTPS(httpPort string, httpsPort string, log *logger.
 	}
 }
 
-func (this *Page) setMimeType(writer *http.ResponseWriter, url string) {
+func (p *Page) setMimeType(writer *http.ResponseWriter, url string) {
 	ext := path.Ext(url)
-	mimeType, found := this.mimeType[ext[1:]] // skip the dot '.'
+	mimeType, found := p.mimeType[ext[1:]] // skip the dot '.'
 	if found {
 		(*writer).Header().Set("Content-Type", fmt.Sprintf("%s; charset=utf-8", readcfg.TrimString(mimeType)))
 	}
