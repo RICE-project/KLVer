@@ -121,7 +121,7 @@ func main() {
             log.LogInfo("HTTPS Server at :", httpsPort)
             go servHttps(chHttps, log, httpsPort, certFile, certKeyFile, mux)
             httpForward := http.NewServeMux()
-            httpForward.HandleFunc("/", forwardToHttps(httpsPort, log))
+            httpForward.HandleFunc("/", forwardToHttps(httpPort, httpsPort, log))
             go servHttp(chHttp, log, httpPort, httpForward)
             <-chHttps
             <-chHttp
