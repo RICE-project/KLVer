@@ -122,7 +122,7 @@ func (this *Page) SetLang(language *map[string]string) {
 
 func (this *Page) ForwardToHTTPS(httpPort string, httpsPort string, log *logger.Logger) http.HandlerFunc {
 	return func(writer http.ResponseWriter, request *http.Request) {
-		location := "https://" + strings.Replace(request.Host, ":"+httpPort, "", -1) + ":" + httpsPort + "/"
+		location := "https://" + strings.Replace(request.Host, ":"+httpPort, "", -1) + ":" + httpsPort + request.URL.Path
 		log.LogInfo(location)
 		writer.Header().Add("Location", location)
         writer.WriteHeader(http.StatusMovedPermanently)
