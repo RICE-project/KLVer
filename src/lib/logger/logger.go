@@ -26,7 +26,7 @@ func (this *Logger) SetNewLogger() error {
 	if err != nil {
 		return err
 	}
-	this.logs = log.New(this.logf, "\n", log.Ldate|log.Ltime|log.Lshortfile)
+	this.logs = log.New(this.logf, "\n", log.Ldate|log.Ltime)
 	this.logs.SetPrefix(consts.NAME + "\t")
 	return err
 }
