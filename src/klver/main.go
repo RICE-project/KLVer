@@ -106,13 +106,13 @@ func main() {
 
 		certFile, errCert := cfg.GetConfig("certfile")
 		if errCert != nil {
-			log.LogInfo("Error when loading SSL Certificate. disable HTTPS")
+			log.LogWarning("Error when loading SSL Certificate!")
 			isServeHttps = false
 		}
 
 		certKeyFile, errKey := cfg.GetConfig("certkeyfile")
 		if errKey != nil {
-			log.LogInfo("Error when loading SSL Certificate Key. disable HTTPS")
+			log.LogWarning("Error when loading SSL Certificate Key!")
 			isServeHttps = false
 		}
 
