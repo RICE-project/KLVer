@@ -34,6 +34,7 @@ import (
 	"lib/logger"
 	"net/http"
     "os"
+    "strings"
 )
 
 var (
@@ -157,9 +158,9 @@ func servHttps(ch chan int, log *logger.Logger, httpsPort string, cert string, c
     return
 }
 
-func forwardToHttps(httpsPort string, log *logger.Logger)http.HandlerFunc{
+func forwardToHttps(httpPort string, httpsPort string, log *logger.Logger)http.HandlerFunc{
     return func(writer http.ResponseWriter, request *http.Request){
-        location := "https://" + request.Host + ":" + httpsPort + "/"
+        location := "https://" + strings.Replace(request.Host, ":" + httpPort, "", -1) + ":" + httpsPort + "/"
         log.LogInfo(location)
         writer.Header().Set("Location", location)
     }
