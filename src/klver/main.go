@@ -130,7 +130,8 @@ func main() {
     if !isServeHttps{
         go servHttp(chHttp, log, httpPort, mux)
     }else{
-        mux.HandleFunc("/", forwardToHttps(httpsPort))
+        httpForward := http.NewServeMux()
+        httpForward.HandleFunc("/", forwardToHttps(httpsPort))
     }
 
     <-chHttps
