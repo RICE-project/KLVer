@@ -54,9 +54,9 @@ func (p *Page) Init(language *map[string]string, sessionManager *sessions.Sessio
 }
 
 func (p *Page) cachePage(dir string) error {
-	fileInfoArr, errReadDir := ioutil.ReadDir(dir)
-	if errReadDir != nil {
-		return errReadDir
+	fileInfoArr, err := ioutil.ReadDir(dir)
+	if err != nil {
+		return err
 	}
 
 	var templateName, templatePath string

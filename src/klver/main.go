@@ -60,9 +60,9 @@ func main() {
 
 	langset, _ := cfg.GetConfig("lang")
 	log.LogInfo("Loading language file...", langset)
-	language, errLang := lang.ReadLang(langset)
-	if errLang != nil {
-		log.LogCritical(errLang)
+	language, err := lang.ReadLang(langset)
+	if err != nil {
+		log.LogCritical(err)
 	}
 
 	log.LogInfo("Starting Session Manager...")
@@ -85,36 +85,36 @@ func main() {
 	mux.HandleFunc("/", pag.GetHandler())
 	//TODO: ajax
 
-	httpPort, errPort := cfg.GetConfig("http_port")
-	if errPort != nil {
+	httpPort, err := cfg.GetConfig("http_port")
+	if err != nil {
 		log.LogInfo("No http_port found in config file, use :80")
 		httpPort = "80"
 	}
 
 	//Try https.
 	log.LogInfo("Try to use HTTPS")
-	useHttps, errUseHttps := cfg.GetConfig("use_https")
-	if errUseHttps != nil {
+	useHttps, err := cfg.GetConfig("use_https")
+	if err != nil {
 		log.LogInfo("No use_https found in config file, disable HTTPS")
 	}
 	isServeHttps := (useHttps == "yes")
 
 	//Load some staff.
 
-	httpsPort, errPorts := cfg.GetConfig("https_port")
-	if errPorts != nil {
+	httpsPort, err := cfg.GetConfig("https_port")
+	if err != nil {
 		log.LogInfo("No https_port found in config file, use :443")
 		httpsPort = "443"
 	}
 
-	certFile, errCert := cfg.GetConfig("certfile")
-	if errCert != nil {
+	certFile, err := cfg.GetConfig("certfile")
+	if err != nil {
 		log.LogWarning("No SSL certificate set, disable HTTPS")
 		isServeHttps = false
 	}
 
-	certKeyFile, errKey := cfg.GetConfig("certkeyfile")
-	if errKey != nil {
+	certKeyFile, err := cfg.GetConfig("certkeyfile")
+	if err != nil {
 		log.LogWarning("No SSL certificate key set, disable HTTPS")
 		isServeHttps = false
 	}
