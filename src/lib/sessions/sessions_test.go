@@ -3,7 +3,7 @@ package sessions
 import "testing"
 import "time"
 
-var data map[string]string = map[string]string{"name": "Admin", "role": "1", "age": "23", "isAdmin": "0"}
+var data map[string]interface{} = map[string]interface{}{"name": "Admin", "role": 1, "age": "23", "isAdmin": "0"}
 
 func TestTypeSession(t *testing.T) {
 	a := new(Session)
@@ -28,9 +28,9 @@ func TestTypeSessionManager(t *testing.T) {
 	sid := b.GetSid()
 	t.Log("SID: ", sid)
 	t.Log("Session: ", b)
-	data = map[string]string{"name": "Test"}
+	data = map[string]interface{}{"name": "Test"}
 	b.SetValue(data)
 	time.Sleep(3 * time.Second)
-	c := a.GetSession(sid)
+	c, _ := a.GetSession(sid)
 	t.Log("Session: ", c)
 }

@@ -19,7 +19,9 @@ type SessionManager struct {
 func (s *SessionManager) Init(log *logger.Logger) {
 	s.sessionList = make(map[string]*Session)
 	s.log = log
-	go s.gc()
+    ch := make(chan int)
+	go s.gc(ch)
+    <-ch
 }
 
 //Creat a new Session.
