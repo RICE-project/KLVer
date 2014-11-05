@@ -19,9 +19,9 @@ type SessionManager struct {
 func (s *SessionManager) Init(log *logger.Logger) {
 	s.sessionList = make(map[string]*Session)
 	s.log = log
-    ch := make(chan int)
+	ch := make(chan int)
 	go s.gc(ch)
-    <-ch
+	<-ch
 }
 
 //Creat a new Session.
@@ -62,9 +62,9 @@ func (s *SessionManager) gc(ch chan int) {
 				}
 			}
 			for _, gcSid := range gcList {
-                s.lock.Lock()
+				s.lock.Lock()
 				s.DestorySession(gcSid)
-                defer s.lock.Unlock()
+				defer s.lock.Unlock()
 				s.log.LogInfo("Session ID=", gcSid, " is expired.")
 			}
 		}
