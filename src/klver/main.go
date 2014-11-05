@@ -129,8 +129,8 @@ func main() {
 		go servHttp(chHttp, log, httpPort, mux)
 	}
 
-    <-chHttp
-    <-chHttps
+	<-chHttp
+	<-chHttps
 
 	log.LogInfo("Exit")
 }
@@ -140,7 +140,7 @@ func servHttp(ch chan int, log *logger.Logger, httpPort string, mux *http.ServeM
 	err := http.ListenAndServe(":"+httpPort, mux)
 	if err != nil {
 		log.LogWarning(err)
-	    ch <- 1
+		ch <- 1
 	}
 }
 
@@ -149,6 +149,6 @@ func servHttps(ch chan int, log *logger.Logger, httpsPort string, cert string, c
 	err := http.ListenAndServeTLS(":"+httpsPort, cert, certkey, mux)
 	if err != nil {
 		log.LogWarning(err)
-	    ch <- 1
+		ch <- 1
 	}
 }
