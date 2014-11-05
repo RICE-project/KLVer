@@ -125,8 +125,10 @@ func main() {
 		httpForward := http.NewServeMux()
 		httpForward.HandleFunc("/", pag.ForwardToHTTPS(httpPort, httpsPort, log))
 		go servHttp(chHttp, log, httpPort, httpForward)
-		<-chHttps
-		<-chHttp
+        select{
+        case <-chHttps:
+		case <-chHttp:
+        }
 	} else {
 		log.LogInfo("HTTPS disabled")
 		log.LogInfo("HTTP Serve at :", httpPort)
