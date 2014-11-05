@@ -120,38 +120,35 @@ func main() {
 	}
 
 	if isServeHttps {
-		log.LogInfo("HTTPS Server at :", httpsPort)
-		go servHttps(chHttps, log, httpsPort, certFile, certKeyFile, mux)
 		httpForward := http.NewServeMux()
 		httpForward.HandleFunc("/", pag.ForwardToHTTPS(httpPort, httpsPort, log))
 		go servHttp(chHttp, log, httpPort, httpForward)
-        <-chHttps:
-		<-chHttp:
+		go servHttps(chHttps, log, httpsPort, certFile, certKeyFile, mux)
 	} else {
 		log.LogInfo("HTTPS disabled")
-		log.LogInfo("HTTP Serve at :", httpPort)
 		go servHttp(chHttp, log, httpPort, mux)
-		<-chHttp
-
 	}
+
+    <-chHttp
+    <-chHttps
 
 	log.LogInfo("Exit")
 }
 
 func servHttp(ch chan int, log *logger.Logger, httpPort string, mux *http.ServeMux) {
-	errHttp := http.ListenAndServe(":"+httpPort, mux)
-	if errHttp != nil {
-		log.LogWarning(errHttp)
+	log.LogInfo("HTTP Serve at :", httpPort)
+	err := http.ListenAndServe(":"+httpPort, mux)
+	if err != nil {
+		log.LogWarning(err)
+	    ch <- 1
 	}
-	ch <- 1
-	return
 }
 
 func servHttps(ch chan int, log *logger.Logger, httpsPort string, cert string, certkey string, mux *http.ServeMux) {
-	errHttps := http.ListenAndServeTLS(":"+httpsPort, cert, certkey, mux)
-	if errHttps != nil {
-		log.LogWarning(errHttps)
+	log.LogInfo("HTTPS Server at :", httpsPort)
+	err := http.ListenAndServeTLS(":"+httpsPort, cert, certkey, mux)
+	if err != nil {
+		log.LogWarning(err)
+	    ch <- 1
 	}
-	ch <- 1
-	return
 }
