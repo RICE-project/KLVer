@@ -53,6 +53,7 @@ func (s *SessionManager) DestorySession(sid string) {
 func (s *SessionManager) gc(ch chan int) {
 	s.log.LogInfo("Session gc Start!")
 	gcList := make([]string, 0)
+	ch <- 1
 	for {
 		if len(s.sessionList) != 0 {
 			for key, value := range s.sessionList {
@@ -67,5 +68,4 @@ func (s *SessionManager) gc(ch chan int) {
 		}
 		time.Sleep(consts.CFG_GC_INTERVAL * time.Second)
 	}
-	ch <- 1
 }
