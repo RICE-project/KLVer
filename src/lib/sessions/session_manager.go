@@ -70,4 +70,5 @@ func (s *SessionManager) gc(ch chan int) {
 		}
 		time.Sleep(consts.CFG_GC_INTERVAL * time.Second)
 	}
+	s.log.LogInfo("Session gc Stoped!")
 }
