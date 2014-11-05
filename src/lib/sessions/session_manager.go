@@ -19,7 +19,7 @@ type SessionManager struct {
 func (s *SessionManager) Init(log *logger.Logger) {
 	s.sessionList = make(map[string]*Session)
 	s.log = log
-	ch := make(chan int)
+	ch := make(chan bool)
 	go s.gc(ch)
 	<-ch
 }
@@ -50,10 +50,10 @@ func (s *SessionManager) DestorySession(sid string) {
 }
 
 //Sessions which are time-expired should be deleted.
-func (s *SessionManager) gc(ch chan int) {
+func (s *SessionManager) gc(ch chan bool) {
 	s.log.LogInfo("Session gc Start!")
 	gcList := make([]string, 0)
-	ch <- 1
+	ch <- true
 	for {
 		if len(s.sessionList) != 0 {
 			for key, value := range s.sessionList {
