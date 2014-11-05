@@ -87,7 +87,7 @@ func main() {
 
 	httpPort, err := cfg.GetConfig("http_port")
 	if err != nil {
-		log.LogInfo("No http_port found in config file, use :80")
+		log.LogWarning("No http_port found in config file, use :80")
 		httpPort = "80"
 	}
 
@@ -95,7 +95,7 @@ func main() {
 	log.LogInfo("Try to use HTTPS")
 	useHttps, err := cfg.GetConfig("use_https")
 	if err != nil {
-		log.LogInfo("No use_https found in config file, disable HTTPS")
+		log.LogWarning("No use_https found in config file, disable HTTPS")
 	}
 	isServeHttps := (useHttps == "yes")
 
@@ -103,7 +103,7 @@ func main() {
 
 	httpsPort, err := cfg.GetConfig("https_port")
 	if err != nil {
-		log.LogInfo("No https_port found in config file, use :443")
+		log.LogWarning("No https_port found in config file, use :443")
 		httpsPort = "443"
 	}
 
