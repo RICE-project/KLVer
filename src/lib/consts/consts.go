@@ -20,7 +20,7 @@ const (
 	CFG_FILE                  = "klver.cfg"
 	CFG_MIMETYPE_FILE         = "mimetype.cfg"
 	CFG_SESSION_TIMEOUT int64 = 3600 //1 hour
-	CFG_GC_INTERVAL           = 30   //30 minutes
+	CFG_GC_INTERVAL           = 30   //30 secondss
 	CHECK_SESSION_YES         = true
 	CHECK_SESSION_NO          = false
 	HTTP_LOGIN                = "login" //go login.

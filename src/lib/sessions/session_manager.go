@@ -55,7 +55,6 @@ func (s *SessionManager) gc(ch chan int) {
 	gcList := make([]string, 0)
 	ch <- 1
 	for {
-        s.log.LogInfo("Enter loop")
 		if len(s.sessionList) != 0 {
 			for key, value := range s.sessionList {
 				if value.isExpired() {
@@ -63,7 +62,9 @@ func (s *SessionManager) gc(ch chan int) {
 				}
 			}
 			for _, gcSid := range gcList {
+                s.lock.Lock()
 				s.DestorySession(gcSid)
+                defer s.lock.Unlock()
 				s.log.LogInfo("Session ID=", gcSid, " is expired.")
 			}
 		}
