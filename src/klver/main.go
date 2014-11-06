@@ -33,6 +33,10 @@ import (
 	"lib/consts"
 	"lib/logger"
 	"net/http"
+    "os"
+    "os/signal"
+    "syscall"
+    "flag"
 )
 
 func main() {
@@ -125,14 +129,28 @@ func main() {
 		log.LogInfo("HTTPS disabled")
 		go servHttp(chHttp, log, httpPort, mux)
 	}
+    chSignal := make(chan os.Signal, 1)
+    go signal.Notify(chSignal, os.Interrupt, os.Kill)
+
+    if *flag.Bool("d", false, "Run as a daemon"){
+
+        pid, err := syscall.Setsid()
+        if err != nil{
+            panic(err)
+        }
+        print(pid)
+    }
 
 	select {
 	case <-chHttp:
 		log.LogWarning("Thread HTTP exit.")
+        os.Exit(1)
 	case <-chHttps:
 		log.LogWarning("Thread HTTPS exit.")
+        os.Exit(1)
+    case <-chSignal:
+        log.LogWarning("Got signal, exit.")
 	}
-	log.LogInfo("Exit")
 }
 
 func servHttp(ch chan int, log *logger.Logger, httpPort string, mux *http.ServeMux) {
