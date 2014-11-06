@@ -35,11 +35,6 @@ import (
 	"net/http"
 )
 
-var (
-	chHttps chan int
-	chHttp  chan int
-)
-
 func main() {
 	cfg := new(config.Config)
 	log := new(logger.Logger)
@@ -85,6 +80,8 @@ func main() {
 	mux.HandleFunc("/", pag.GetHandler())
 	//TODO: ajax
 
+	chHttp := make(chan int)
+	chHttps := make(chan int)
 	httpPort, err := cfg.GetConfig("http_port")
 	if err != nil {
 		log.LogWarning("No http_port found in config file, use :80")
@@ -129,9 +126,12 @@ func main() {
 		go servHttp(chHttp, log, httpPort, mux)
 	}
 
-	<-chHttp
-	<-chHttps
-
+	select {
+	case <-chHttp:
+		log.LogWarning("Thread HTTP exit.")
+	case <-chHttps:
+		log.LogWarning("Thread HTTPS exit.")
+	}
 	log.LogInfo("Exit")
 }
 

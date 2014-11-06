@@ -48,7 +48,7 @@ func (l *Logger) LogInfo(argv ...interface{}) {
 
 //For warning(s) use.
 func (l *Logger) LogWarning(argv ...interface{}) {
-	fmt.Println("\033[31;1mWARNING:\033[0m", argv)
+	fmt.Fprintln(os.Stderr, "\033[31;1mWARNING:\033[0m", argv)
 	l.logs.Print("WARN: ", argv)
 }
 
