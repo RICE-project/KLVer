@@ -35,8 +35,6 @@ import (
 	"net/http"
     "os"
     "os/signal"
-    "syscall"
-    "flag"
 )
 
 func main() {
@@ -131,15 +129,6 @@ func main() {
 	}
     chSignal := make(chan os.Signal, 1)
     go signal.Notify(chSignal, os.Interrupt, os.Kill)
-
-    if *flag.Bool("d", false, "Run as a daemon"){
-
-        pid, err := syscall.Setsid()
-        if err != nil{
-            panic(err)
-        }
-        print(pid)
-    }
 
 	select {
 	case <-chHttp:
