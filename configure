@@ -25,7 +25,7 @@ PREFIXs=$(echo $PREFIX|sed 's/\\//g')
 echo -n "Prefix ... "
 echo $PREFIXs
 
-cat 'src/lib/consts/dir.go.in'|sed "s/@PREFIX@/$PREFIX\//" > src/lib/consts/dir.go
+sed "s/@PREFIX@/$PREFIX\//" src/lib/consts/dir.go.in > src/lib/consts/dir.go
 
 export GOPATH=$(pwd)
 cat <<EOF >Makefile
