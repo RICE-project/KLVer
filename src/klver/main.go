@@ -33,26 +33,29 @@ import (
 	"lib/consts"
 	"lib/logger"
 	"net/http"
-    "os"
-    "os/signal"
+	"os"
+	"os/signal"
 )
 
 func main() {
+	var err error
+
 	cfg := new(config.Config)
 	log := new(logger.Logger)
 	ses := new(sessions.SessionManager)
 	pag := new(page.Page)
-	errLog := log.SetNewLogger()
-	if errLog != nil {
-		panic(errLog)
+
+	err = log.SetNewLogger()
+	if err != nil {
+		panic(err)
 	}
 	log.LogInfo("Initializing...")
 
 	log.LogInfo(consts.NAME, consts.VERSION)
 	log.LogInfo("Reading config file...")
-	errCfg := cfg.Init()
-	if errCfg != nil {
-		log.LogCritical(errCfg)
+	err = cfg.Init()
+	if err != nil {
+		log.LogCritical(err)
 	}
 
 	langset, _ := cfg.GetConfig("lang")
@@ -65,9 +68,9 @@ func main() {
 	log.LogInfo("Starting Session Manager...")
 	ses.Init(log)
 	log.LogInfo("Starting Page Manager...")
-	errPage := pag.Init(&language, ses, log)
-	if errPage != nil {
-		log.LogCritical(errPage)
+	err = pag.Init(&language, ses, log)
+	if err != nil {
+		log.LogCritical(err)
 	}
 	log.LogInfo("Starting HTTP Service...")
 	mux := http.NewServeMux()
@@ -127,18 +130,18 @@ func main() {
 		log.LogInfo("HTTPS disabled")
 		go servHttp(chHttp, log, httpPort, mux)
 	}
-    chSignal := make(chan os.Signal, 1)
-    go signal.Notify(chSignal, os.Interrupt, os.Kill)
+	chSignal := make(chan os.Signal, 1)
+	go signal.Notify(chSignal, os.Interrupt, os.Kill)
 
 	select {
 	case <-chHttp:
 		log.LogWarning("Thread HTTP exit.")
-        os.Exit(1)
+		os.Exit(1)
 	case <-chHttps:
 		log.LogWarning("Thread HTTPS exit.")
-        os.Exit(1)
-    case <-chSignal:
-        log.LogWarning("Got signal, exit.")
+		os.Exit(1)
+	case s := <-chSignal:
+		log.LogWarning("Exit for signal", s)
 	}
 }
 

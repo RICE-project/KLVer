@@ -27,28 +27,28 @@ type Page struct {
 
 //Load language and HTML templates.
 func (p *Page) Init(language *map[string]string, sessionManager *sessions.SessionManager, logs *logger.Logger) error {
-	var errMime error
+	var err error
 
 	p.log = logs
 	p.SetLang(language)
-	p.mimeType, errMime = getMimetype()
-	if errMime != nil {
-		p.log.LogCritical(errMime)
-		return errMime
+	p.mimeType, err = getMimetype()
+	if err != nil {
+		p.log.LogCritical(err)
+		return err
 	}
 
 	p.sessionM = sessionManager
 	p.templates = make(map[string]*template.Template)
 	p.templatesErr = make(map[string]*template.Template)
-	errCPage := p.cachePage(consts.DIR_HTML)
-	if errCPage != nil {
-		p.log.LogCritical(errCPage)
-		return errCPage
+	err = p.cachePage(consts.DIR_HTML)
+	if err != nil {
+		p.log.LogCritical(err)
+		return err
 	}
-	errEPage := p.cachePage(consts.DIR_HTML_ERROR)
-	if errEPage != nil {
-		p.log.LogCritical(errEPage)
-		return errEPage
+	err = p.cachePage(consts.DIR_HTML_ERROR)
+	if err != nil {
+		p.log.LogCritical(err)
+		return err
 	}
 	return nil
 }
@@ -84,11 +84,11 @@ func (p *Page) GetHandler() http.HandlerFunc {
 		// Check if the page exists.
 		if found {
 			err := template.Execute(writer, p.lang)
-			checkErr(err)
+			checkErr(p.log, err)
 		} else if name == "" { // Default page.
 			template = p.templates[consts.HTTP_DEFAULT]
 			err := template.Execute(writer, p.lang)
-			checkErr(err)
+			checkErr(p.log, err)
 		} else {
 			p.err404Handler(writer, request)
 		}
@@ -121,7 +121,7 @@ func (p *Page) err404Handler(writer http.ResponseWriter, request *http.Request) 
 	writer.WriteHeader(http.StatusNotFound)
 	template := p.templates["404"]
 	err := template.Execute(writer, p.lang)
-	checkErr(err)
+	checkErr(p.log, err)
 }
 
 func (p *Page) SetLang(language *map[string]string) {
@@ -144,9 +144,9 @@ func (p *Page) setMimeType(writer http.ResponseWriter, url string) {
 	}
 }
 
-func checkErr(err error) {
+func checkErr(log *logger.Logger, err error) {
 	if err != nil {
-		panic(err)
+		log.LogError(err)
 	}
 }
 
