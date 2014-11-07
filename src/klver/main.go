@@ -131,7 +131,7 @@ func main() {
 		go servHttp(chHttp, log, httpPort, mux)
 	}
 	chSignal := make(chan os.Signal, 1)
-	go signal.Notify(chSignal, os.Interrupt, os.Kill)
+	go signal.Notify(chSignal)
 
 	select {
 	case <-chHttp:

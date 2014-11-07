@@ -26,6 +26,7 @@ echo -n "Prefix ... "
 echo $PREFIXs
 
 sed "s/@PREFIX@/$PREFIX\//" src/lib/consts/dir.go.in > src/lib/consts/dir.go
+sed "s/@PREFIX@/$PREFIX/" ricectl.in > ricectl
 
 export GOPATH=$(pwd)
 cat <<EOF >Makefile
@@ -38,6 +39,8 @@ build:
 	mkdir -p \$(GOPATH)/bin
 	go build klver
 	mv klver \$(GOPATH)/bin
+	mv ricectl \$(GOPATH)/bin
+	chmod 755 \$(GOPATH)/bin/ricectl
 	mkdir -p \$(GOPATH)/share/log
 		
 clean:

@@ -1,0 +1,25 @@
+#!/bin/sh
+
+PROJECT=klver
+RICE_DIR=@PREFIX@
+
+cd $RICE_DIR
+
+OPTS=$1
+
+start(){
+    /bin/setsid ./bin/$PROJECT &
+    exit 0
+}
+
+stop(){
+    killall $PROJECT
+    exit 0
+}
+
+case $OPTS in
+    start) start ;;
+    stop) stop ;;
+    restart) stop && start ;;
+    *) echo "Usage: $0 {start|stop|restart}" ;;
+esac
