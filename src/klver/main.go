@@ -145,7 +145,7 @@ func main() {
 	}
 }
 
-func servHttp(ch chan int, log *logger.Logger, httpPort string, mux *http.ServeMux) {
+func servHttp(ch chan int, ser *http.Server ,log *logger.Logger, httpPort string, mux *http.ServeMux) {
 	log.LogInfo("HTTP Serve at :", httpPort)
 	err := http.ListenAndServe(":"+httpPort, mux)
 	if err != nil {

@@ -46,14 +46,6 @@ func ReadConfig(filename string) (map[string]string, error) {
 
 // Get rid of spaces and tab.
 func TrimString(str string) string {
-	const TRIM_HEAD_SPACE = "^[ ]+"
-	const TRIM_TAIL_SPACE = "[ ]+$"
-	regHead, _ := regexp.Compile(TRIM_HEAD_SPACE)
-	regTail, _ := regexp.Compile(TRIM_TAIL_SPACE)
-
-	out := strings.Replace(str, "\t", "", -1) // Go to hell the tab space.
-	out = regHead.ReplaceAllLiteralString(out, "")
-	out = regTail.ReplaceAllLiteralString(out, "")
-
-	return out
+    const REG = "^[ \t]+|[ \t]+$"
+	return regexp.MustCompile(REG).ReplaceAllString(str, "")
 }
