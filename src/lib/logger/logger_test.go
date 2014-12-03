@@ -6,6 +6,7 @@ var a Logger
 
 func TestLogger(t *testing.T) {
 	err := a.SetNewLogger()
+	a.SetLevel(LOG_LEVEL_INFO)
 	if err != nil {
 		t.Error("Err: ", err)
 	}

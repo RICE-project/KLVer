@@ -49,6 +49,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+	log.SetLevel(logger.LOG_LEVEL_INFO)
 	log.LogInfo("Initializing...")
 
 	log.LogInfo(consts.NAME, consts.VERSION)
@@ -56,6 +57,13 @@ func main() {
 	err = cfg.Init()
 	if err != nil {
 		log.LogCritical(err)
+	}
+	loglevel, err := cfg.GetConfig("log_level")
+	if err != nil {
+		log.LogInfo("No log_level found, use LOG_LEVEL_INFO as default.")
+	} else {
+		log.LogInfo("Use log level", loglevel)
+		log.SetLevel(logger.GetLevel(loglevel))
 	}
 
 	langset, _ := cfg.GetConfig("lang")
@@ -145,7 +153,7 @@ func main() {
 	}
 }
 
-func servHttp(ch chan int, ser *http.Server ,log *logger.Logger, httpPort string, mux *http.ServeMux) {
+func servHttp(ch chan int, log *logger.Logger, httpPort string, mux *http.ServeMux) {
 	log.LogInfo("HTTP Serve at :", httpPort)
 	err := http.ListenAndServe(":"+httpPort, mux)
 	if err != nil {
